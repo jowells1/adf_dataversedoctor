@@ -49,6 +49,7 @@
 															"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 															"type": "Expression"
 														},
+														"timeout": "0.00:05:00",
 														"dataverseBaseUrl": {
 															"value": "@pipeline().parameters.dataverseBaseUrl",
 															"type": "Expression"
@@ -170,6 +171,7 @@
 															"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 															"type": "Expression"
 														},
+														"timeout": "0.00:05:00",
 														"dataverseBaseUrl": {
 															"value": "@pipeline().parameters.dataverseBaseUrl",
 															"type": "Expression"
@@ -291,6 +293,7 @@
 															"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 															"type": "Expression"
 														},
+														"timeout": "0.00:05:00",
 														"dataverseBaseUrl": {
 															"value": "@pipeline().parameters.dataverseBaseUrl",
 															"type": "Expression"
@@ -411,6 +414,7 @@
 													"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 													"type": "Expression"
 												},
+												"timeout": "0.00:05:00",
 												"dataverseBaseUrl": {
 													"value": "@pipeline().parameters.dataverseBaseUrl",
 													"type": "Expression"
