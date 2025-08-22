@@ -1,0 +1,90 @@
+{
+	"name": "cWebActivity - CCM - dvOperationIdentity1",
+	"properties": {
+		"activities": [
+			{
+				"name": "dvOperation_Identity1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"OData-MaxVersion ": "4.0",
+						"OData-Version": "4.0",
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+						"MSCRM.BypassBusinessLogicExecution": {
+							"value": "@pipeline().parameters.MSCRMBypassBusinessLogicExecution",
+							"type": "Expression"
+						},
+						"MSCRM.SuppressCallbackRegistrationExpanderJob": {
+							"value": "@pipeline().parameters.MSCRMSuppressCallbackRegistrationExpanderJob",
+							"type": "Expression"
+						}
+					},
+					"httpRequestTimeout": {
+						"value": "@pipeline().parameters.timeout",
+						"type": "Expression"
+					},
+					"url": {
+						"value": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "@pipeline().parameters.body",
+						"type": "Expression"
+					},
+					"authentication": {
+						"resource": {
+							"value": "@pipeline().parameters.dataverseBaseUrl",
+							"type": "Expression"
+						},
+						"credential": {
+							"referenceName": "DataverseDoctor_jowells_Identity1",
+							"type": "CredentialReference"
+						},
+						"type": "UserAssignedManagedIdentity"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"body": {
+				"type": "string"
+			},
+			"timeout": {
+				"type": "string",
+				"defaultValue": "0.12:00:00"
+			},
+			"dataverseBaseUrl": {
+				"type": "string"
+			},
+			"entitySetName": {
+				"type": "string"
+			},
+			"MSCRMBypassBusinessLogicExecution": {
+				"type": "string"
+			},
+			"MSCRMSuppressCallbackRegistrationExpanderJob": {
+				"type": "bool"
+			},
+			"dvOperation": {
+				"type": "string"
+			},
+			"claimRunId": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-08-22T20:18:09Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

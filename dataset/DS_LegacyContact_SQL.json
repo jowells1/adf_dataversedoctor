@@ -1,0 +1,13 @@
+{
+	"name": "DS_LegacyContact_SQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LegacyContactCenterSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

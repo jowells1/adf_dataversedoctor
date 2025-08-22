@@ -1,0 +1,16 @@
+{
+	"name": "REST_DataverseDoctor_App1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataverseDoctor_AppUser1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "https://dataversedoctor.crm.dynamics.com"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
