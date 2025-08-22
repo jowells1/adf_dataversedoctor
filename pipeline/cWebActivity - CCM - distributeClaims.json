@@ -6,7 +6,14 @@
 			{
 				"name": "ForEach_Batches",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set-switchValue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -519,14 +526,18 @@
 				}
 			},
 			{
-				"name": "Set-",
+				"name": "Set-switchValue",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "switchValue",
+					"value": "0"
+				}
 			}
 		],
 		"parameters": {
@@ -555,6 +566,11 @@
 			},
 			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"switchValue": {
+				"type": "String"
 			}
 		},
 		"annotations": [
