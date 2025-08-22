@@ -30,7 +30,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@string(mod(item().index, 3))",
+									"value": "@mod(item().index, 3)",
 									"type": "Expression"
 								},
 								"cases": [
