@@ -396,6 +396,30 @@
 								},
 								"errorCode": "500"
 							}
+						},
+						{
+							"name": "Set_RemainingCount_ErrorZero",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Fail1",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int('0')",
+									"type": "Expression"
+								}
+							}
 						}
 					],
 					"timeout": "0.01:00:00"
