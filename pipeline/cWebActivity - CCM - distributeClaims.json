@@ -566,6 +566,20 @@
 			},
 			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
 				"type": "string"
+			},
+			"iterationIndexes": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"value": 0
+					},
+					{
+						"value": 1
+					},
+					{
+						"value": 2
+					}
+				]
 			}
 		},
 		"variables": {
