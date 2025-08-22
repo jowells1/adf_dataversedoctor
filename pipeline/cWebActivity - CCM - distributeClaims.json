@@ -570,9 +570,7 @@
 			"iterationIndexes": {
 				"type": "array",
 				"defaultValue": [
-					{
-						"value": 0
-					},
+					"0",
 					{
 						"value": 1
 					},
