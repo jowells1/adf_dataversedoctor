@@ -393,7 +393,8 @@
 								"message": {
 									"value": "@activity('Execute_distributeClaims').output",
 									"type": "Expression"
-								}
+								},
+								"errorCode": "500"
 							}
 						}
 					],
