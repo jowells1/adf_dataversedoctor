@@ -153,6 +153,20 @@
 														"type": "DatasetReference"
 													}
 												}
+											},
+											{
+												"name": "Set",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": ""
+												}
 											}
 										]
 									},
