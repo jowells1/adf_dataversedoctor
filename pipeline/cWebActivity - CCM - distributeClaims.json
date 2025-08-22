@@ -222,7 +222,7 @@
 													"source": {
 														"type": "AzureSqlSource",
 														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim ClaimRunId=''', pipeline().parameters.claimRunId, ''', NewStatus=''Success'';')",
+															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
 															"type": "Expression"
 														},
 														"queryTimeout": "02:00:00",
@@ -257,7 +257,7 @@
 													"source": {
 														"type": "AzureSqlSource",
 														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim ClaimRunId=''', pipeline().parameters.claimRunId, ''', NewStatus=''Failed'';')",
+															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
 															"type": "Expression"
 														},
 														"queryTimeout": "02:00:00",
@@ -344,7 +344,7 @@
 													"source": {
 														"type": "AzureSqlSource",
 														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim ClaimRunId=''', pipeline().parameters.claimRunId, ''', NewStatus=''Success'';')",
+															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
 															"type": "Expression"
 														},
 														"queryTimeout": "02:00:00",
@@ -379,7 +379,7 @@
 													"source": {
 														"type": "AzureSqlSource",
 														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim ClaimRunId=''', pipeline().parameters.claimRunId, ''', NewStatus=''Failed'';')",
+															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
 															"type": "Expression"
 														},
 														"queryTimeout": "02:00:00",
