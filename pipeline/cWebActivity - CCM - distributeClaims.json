@@ -536,7 +536,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "switchValue",
-					"value": ""
+					"value": {
+						"value": "@range(\n  0,\n  div(add(add(length(pipeline().parameters.targets),pipeline().parameters.perRequest), -1), pipeline().parameters.perRequest))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
