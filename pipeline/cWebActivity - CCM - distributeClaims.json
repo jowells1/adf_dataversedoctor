@@ -390,6 +390,30 @@
 														"type": "DatasetReference"
 													}
 												}
+											},
+											{
+												"name": "Set-swtichValue0",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Success_FinalizeAccountStagingForClaim_Id0",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": {
+														"value": "@int('2')",
+														"type": "Expression"
+													}
+												}
 											}
 										]
 									}
