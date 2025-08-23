@@ -10,10 +10,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@range(\n  0,variables('switchValue'))",
+						"value": "@variables('switchValue')",
 						"type": "Expression"
 					},
 					"isSequential": false,
+					"batchCount": 50,
 					"activities": [
 						{
 							"name": "Switch_Identity",
