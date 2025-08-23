@@ -146,6 +146,16 @@
 														"type": "DatasetReference"
 													}
 												}
+											},
+											{
+												"name": "Set variable1",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": []
 											}
 										]
 									},
@@ -410,7 +420,7 @@
 												"typeProperties": {
 													"variableName": "switchValue",
 													"value": {
-														"value": "@int('2')",
+														"value": "@int('1')",
 														"type": "Expression"
 													}
 												}
