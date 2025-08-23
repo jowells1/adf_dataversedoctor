@@ -308,13 +308,13 @@
 												"userProperties": [],
 												"typeProperties": {
 													"variableName": "switchValue",
-													"value": "@int('1')"
+													"value": "Id0"
 												}
 											}
 										]
 									},
 									{
-										"value": "0",
+										"value": "Id0",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity0",
@@ -451,10 +451,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"variableName": "switchValue",
-													"value": {
-														"value": "@string('1');",
-														"type": "Expression"
-													}
+													"value": "Id1"
 												}
 											}
 										]
