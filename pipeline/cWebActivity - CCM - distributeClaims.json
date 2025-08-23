@@ -622,7 +622,8 @@
 		},
 		"variables": {
 			"switchValue": {
-				"type": "Integer"
+				"type": "Integer",
+				"defaultValue": 1
 			}
 		},
 		"annotations": [
