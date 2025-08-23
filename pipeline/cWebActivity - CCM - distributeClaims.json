@@ -642,7 +642,7 @@
 		"variables": {
 			"switchValue": {
 				"type": "String",
-				"defaultValue": "Id0"
+				"defaultValue": "Id1"
 			}
 		},
 		"annotations": [
