@@ -148,14 +148,28 @@
 												}
 											},
 											{
-												"name": "Set variable1",
+												"name": "Set-switchValue1",
 												"type": "SetVariable",
-												"dependsOn": [],
+												"dependsOn": [
+													{
+														"activity": "Success_FinalizeAccountStagingForClaim_Id1",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
 												"policy": {
 													"secureOutput": false,
 													"secureInput": false
 												},
-												"userProperties": []
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": {
+														"value": "@int('2')",
+														"type": "Expression"
+													}
+												}
 											}
 										]
 									},
