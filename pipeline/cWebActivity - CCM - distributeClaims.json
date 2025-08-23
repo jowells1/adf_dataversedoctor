@@ -6,14 +6,7 @@
 			{
 				"name": "ForEach_Batches",
 				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Set-switchValue",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -21,7 +14,7 @@
 						"type": "Expression"
 					},
 					"isSequential": false,
-					"batchCount": 5,
+					"batchCount": 20,
 					"activities": [
 						{
 							"name": "Switch_Identity",
@@ -30,12 +23,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@string(mod(item(), 3))",
+									"value": "@string(mod(item(), length(variables('pipelineNames'))))",
 									"type": "Expression"
 								},
 								"cases": [
 									{
-										"value": "1",
+										"value": "Id1",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity1",
@@ -153,11 +146,32 @@
 														"type": "DatasetReference"
 													}
 												}
+											},
+											{
+												"name": "Set-switchValue1",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Success_FinalizeAccountStagingForClaim_Id1",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": "Id2"
+												}
 											}
 										]
 									},
 									{
-										"value": "2",
+										"value": "Id2",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity2",
@@ -275,11 +289,32 @@
 														"type": "DatasetReference"
 													}
 												}
+											},
+											{
+												"name": "Set-switchValue2",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Success_FinalizeAccountStagingForClaim_Id2",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": "Id0"
+												}
 											}
 										]
 									},
 									{
-										"value": "0",
+										"value": "Id0",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity0",
@@ -396,6 +431,27 @@
 														"referenceName": "DS_LegacyContact_SQL",
 														"type": "DatasetReference"
 													}
+												}
+											},
+											{
+												"name": "Set-swtichValue0",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Success_FinalizeAccountStagingForClaim_Id0",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": "Id1"
 												}
 											}
 										]
@@ -518,25 +574,32 @@
 												"type": "DatasetReference"
 											}
 										}
+									},
+									{
+										"name": "Set _switchValue3",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "Success_FinalizeAccountStagingForClaim_Id",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "switchValue",
+											"value": "Id0"
+										}
 									}
 								]
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Set-switchValue",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "switchValue",
-					"value": "0"
 				}
 			}
 		],
@@ -566,11 +629,28 @@
 			},
 			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
 				"type": "string"
+			},
+			"iterationIndexes": {
+				"type": "array",
+				"defaultValue": [
+					"0",
+					"1",
+					"2"
+				]
 			}
 		},
 		"variables": {
 			"switchValue": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "Id1"
+			},
+			"pipelineNames": {
+				"type": "Array",
+				"defaultValue": [
+					"ChildPipeline_Id0",
+					"ChildPipeline_Id1",
+					"ChildPipeline_Id2"
+				]
 			}
 		},
 		"annotations": [
