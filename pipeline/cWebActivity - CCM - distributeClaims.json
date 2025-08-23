@@ -23,7 +23,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@string(mod(item(), 3))",
+									"value": "@variables('switchValue')",
 									"type": "Expression"
 								},
 								"cases": [
@@ -304,7 +304,10 @@
 												"userProperties": [],
 												"typeProperties": {
 													"variableName": "switchValue",
-													"value": "@int('1')"
+													"value": {
+														"value": "@int('0')",
+														"type": "Expression"
+													}
 												}
 											}
 										]
