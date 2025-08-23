@@ -28,7 +28,7 @@
 								},
 								"cases": [
 									{
-										"value": "Id1",
+										"value": "1",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity1",
@@ -171,7 +171,7 @@
 										]
 									},
 									{
-										"value": "Id2",
+										"value": "2",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity2",
@@ -314,7 +314,7 @@
 										]
 									},
 									{
-										"value": "Id0",
+										"value": "0",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity0",
