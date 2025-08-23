@@ -292,6 +292,20 @@
 														"type": "DatasetReference"
 													}
 												}
+											},
+											{
+												"name": "Set-switchValue2",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "switchValue",
+													"value": "@int('1')"
+												}
 											}
 										]
 									},
