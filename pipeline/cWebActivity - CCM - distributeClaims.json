@@ -602,10 +602,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "switchValue",
-											"value": {
-												"value": "@string('0');",
-												"type": "Expression"
-											}
+											"value": "Id0"
 										}
 									}
 								]
@@ -654,7 +651,7 @@
 		"variables": {
 			"switchValue": {
 				"type": "String",
-				"defaultValue": "0"
+				"defaultValue": "Id0"
 			}
 		},
 		"annotations": [
