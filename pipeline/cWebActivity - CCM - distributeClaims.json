@@ -165,10 +165,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"variableName": "switchValue",
-													"value": {
-														"value": "@int('2')",
-														"type": "Expression"
-													}
+													"value": "@int('1')"
 												}
 											}
 										]
