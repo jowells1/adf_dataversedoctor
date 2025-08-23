@@ -6,14 +6,7 @@
 			{
 				"name": "ForEach_Batches",
 				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Set-switchValue",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -523,23 +516,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Set-switchValue",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "switchValue",
-					"value": {
-						"value": "@div(add(add(length(pipeline().parameters.targets),pipeline().parameters.perRequest), -1), pipeline().parameters.perRequest)",
-						"type": "Expression"
-					}
 				}
 			}
 		],
