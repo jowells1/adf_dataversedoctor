@@ -22,6 +22,10 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
+								"on": {
+									"value": "@mod(item(), length(variables('pipelineNames')))",
+									"type": "Expression"
+								},
 								"cases": [
 									{
 										"value": "Id1",
