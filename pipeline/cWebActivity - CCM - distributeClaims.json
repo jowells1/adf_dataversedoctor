@@ -647,9 +647,9 @@
 			"pipelineNames": {
 				"type": "Array",
 				"defaultValue": [
+					"ChildPipeline_Id0",
 					"ChildPipeline_Id1",
-					"ChildPipeline_2",
-					"ChildPipeline_MI3"
+					"ChildPipeline_Id2"
 				]
 			}
 		},
