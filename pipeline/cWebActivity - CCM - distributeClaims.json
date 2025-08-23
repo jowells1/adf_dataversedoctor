@@ -581,7 +581,7 @@
 		},
 		"variables": {
 			"switchValue": {
-				"type": "String"
+				"type": "Integer"
 			}
 		},
 		"annotations": [
