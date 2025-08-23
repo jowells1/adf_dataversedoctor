@@ -643,6 +643,14 @@
 			"switchValue": {
 				"type": "String",
 				"defaultValue": "Id1"
+			},
+			"pipelineNames": {
+				"type": "Array",
+				"defaultValue": [
+					"ChildPipeline_Id1",
+					"ChildPipeline_2",
+					"ChildPipeline_MI3"
+				]
 			}
 		},
 		"annotations": [
