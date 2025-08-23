@@ -14,7 +14,6 @@
 						"type": "Expression"
 					},
 					"isSequential": false,
-					"batchCount": 5,
 					"activities": [
 						{
 							"name": "Switch_Identity",
@@ -622,8 +621,8 @@
 		},
 		"variables": {
 			"switchValue": {
-				"type": "Integer",
-				"defaultValue": 0
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"annotations": [
