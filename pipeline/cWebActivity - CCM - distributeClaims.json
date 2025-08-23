@@ -22,10 +22,6 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"on": {
-									"value": "@variables('switchValue')",
-									"type": "Expression"
-								},
 								"cases": [
 									{
 										"value": "Id1",
