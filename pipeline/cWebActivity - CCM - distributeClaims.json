@@ -28,7 +28,7 @@
 								},
 								"cases": [
 									{
-										"value": "1",
+										"value": "Id1",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity1",
@@ -165,16 +165,13 @@
 												"userProperties": [],
 												"typeProperties": {
 													"variableName": "switchValue",
-													"value": {
-														"value": "@string('2');",
-														"type": "Expression"
-													}
+													"value": "Id2"
 												}
 											}
 										]
 									},
 									{
-										"value": "2",
+										"value": "Id2",
 										"activities": [
 											{
 												"name": "Exec_dvOperation_Identity2",
@@ -311,10 +308,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"variableName": "switchValue",
-													"value": {
-														"value": "@string('0');",
-														"type": "Expression"
-													}
+													"value": "@int('1')"
 												}
 											}
 										]
