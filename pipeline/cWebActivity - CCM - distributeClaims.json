@@ -10,7 +10,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@variables('switchValue')",
+						"value": "@range(\n  0,\n  div(add(add(length(pipeline().parameters.targets),pipeline().parameters.perRequest), -1), pipeline().parameters.perRequest))",
 						"type": "Expression"
 					},
 					"isSequential": false,
