@@ -587,7 +587,14 @@
 									{
 										"name": "Set _switchValue3",
 										"type": "SetVariable",
-										"dependsOn": [],
+										"dependsOn": [
+											{
+												"activity": "Success_FinalizeAccountStagingForClaim_Id",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
 										"policy": {
 											"secureOutput": false,
 											"secureInput": false
