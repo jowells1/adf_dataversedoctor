@@ -537,7 +537,7 @@
 				"typeProperties": {
 					"variableName": "switchValue",
 					"value": {
-						"value": "@range(\n  0,\n  div(add(add(length(pipeline().parameters.targets),pipeline().parameters.perRequest), -1), pipeline().parameters.perRequest))",
+						"value": "div(add(add(length(pipeline().parameters.targets),pipeline().parameters.perRequest), -1), pipeline().parameters.perRequest)",
 						"type": "Expression"
 					}
 				}
