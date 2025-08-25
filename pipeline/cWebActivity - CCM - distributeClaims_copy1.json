@@ -135,27 +135,6 @@
 									"type": "DatasetReference"
 								}
 							}
-						},
-						{
-							"name": "Set-switchValue2",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Success_FinalizeAccountStagingForClaim_Id2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "switchValue",
-								"value": "Id0"
-							}
 						}
 					]
 				}
