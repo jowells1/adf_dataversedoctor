@@ -441,7 +441,7 @@
 			},
 			"perRequest": {
 				"type": "Int",
-				"defaultValue": 100
+				"defaultValue": 20
 			},
 			"dvOperation": {
 				"type": "string",
