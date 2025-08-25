@@ -347,7 +347,7 @@
 										"type": "Expression"
 									},
 									"perRequest": {
-										"value": "@pipeline().parameters.perRequest",
+										"value": "@pipeline().parameters.batchSize",
 										"type": "Expression"
 									},
 									"dataverseBaseUrl": {
@@ -449,7 +449,7 @@
 			},
 			"numberOfChildPipe": {
 				"type": "int",
-				"defaultValue": 3
+				"defaultValue": 1
 			},
 			"MSCRM_BypassBusinessLogicExecution": {
 				"type": "string",
