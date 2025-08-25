@@ -36,7 +36,7 @@
 									"Accept": "application/json",
 									"Content-Type": "application/json",
 									"MSCRM.BypassBusinessLogicExecution": {
-										"value": "@pipeline().parameters.MSCRMBypassBusinessLogicExecution",
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
 										"type": "Expression"
 									},
 									"MSCRM.SuppressCallbackRegistrationExpanderJob": {
@@ -53,7 +53,7 @@
 									"type": "Expression"
 								},
 								"body": {
-									"value": "@pipeline().parameters.body",
+									"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 									"type": "Expression"
 								},
 								"authentication": {
