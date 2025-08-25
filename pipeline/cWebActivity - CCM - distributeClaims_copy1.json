@@ -40,13 +40,9 @@
 										"type": "Expression"
 									},
 									"MSCRM.SuppressCallbackRegistrationExpanderJob": {
-										"value": "@pipeline().parameters.MSCRMSuppressCallbackRegistrationExpanderJob",
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
 										"type": "Expression"
 									}
-								},
-								"httpRequestTimeout": {
-									"value": "@pipeline().parameters.timeout",
-									"type": "Expression"
 								},
 								"url": {
 									"value": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
