@@ -72,7 +72,14 @@
 						{
 							"name": "Success_FinalizeAccountStagingForClaim_Id2",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "dvOperation_Identity1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -100,7 +107,14 @@
 						{
 							"name": "Fail_FinalizeAccountStagingForClaim_Id2",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "dvOperation_Identity1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
