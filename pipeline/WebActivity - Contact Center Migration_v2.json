@@ -346,6 +346,10 @@
 										"value": "@variables('targets')",
 										"type": "Expression"
 									},
+									"perRequest": {
+										"value": "@pipeline().parameters.perRequest",
+										"type": "Expression"
+									},
 									"dataverseBaseUrl": {
 										"value": "@pipeline().parameters.dataverseBaseUrl",
 										"type": "Expression"
