@@ -17,586 +17,141 @@
 					"batchCount": 50,
 					"activities": [
 						{
-							"name": "Switch_Identity",
-							"type": "Switch",
+							"name": "Exec_dvOperation_Identity2",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
-								"on": {
-									"value": "@string(mod(item(), length(variables('pipelineNames'))))",
-									"type": "Expression"
+								"pipeline": {
+									"referenceName": "cWebActivity - CCM - dvOperationIdentity3",
+									"type": "PipelineReference"
 								},
-								"cases": [
-									{
-										"value": "1",
-										"activities": [
-											{
-												"name": "Exec_dvOperation_Identity1",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"policy": {
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "cWebActivity - CCM - dvOperationIdentity2",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": false,
-													"parameters": {
-														"body": {
-															"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
-															"type": "Expression"
-														},
-														"timeout": "0.00:05:00",
-														"dataverseBaseUrl": {
-															"value": "@pipeline().parameters.dataverseBaseUrl",
-															"type": "Expression"
-														},
-														"entitySetName": {
-															"value": "@pipeline().parameters.entitySetName",
-															"type": "Expression"
-														},
-														"MSCRMBypassBusinessLogicExecution": {
-															"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-															"type": "Expression"
-														},
-														"MSCRMSuppressCallbackRegistrationExpanderJob": {
-															"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
-															"type": "Expression"
-														},
-														"dvOperation": {
-															"value": "@pipeline().parameters.dvOperation",
-															"type": "Expression"
-														},
-														"claimRunId": {
-															"value": "@pipeline().parameters.claimRunId",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "Success_FinalizeAccountStagingForClaim_Id1",
-												"type": "Lookup",
-												"dependsOn": [
-													{
-														"activity": "Exec_dvOperation_Identity1",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "AzureSqlSource",
-														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"dataset": {
-														"referenceName": "DS_LegacyContact_SQL",
-														"type": "DatasetReference"
-													}
-												}
-											},
-											{
-												"name": "Fail_FinalizeAccountStagingForClaim_Id1",
-												"type": "Lookup",
-												"dependsOn": [
-													{
-														"activity": "Exec_dvOperation_Identity1",
-														"dependencyConditions": [
-															"Failed"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.00:10:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "AzureSqlSource",
-														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"dataset": {
-														"referenceName": "DS_LegacyContact_SQL",
-														"type": "DatasetReference"
-													}
-												}
-											},
-											{
-												"name": "Set-switchValue1",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Success_FinalizeAccountStagingForClaim_Id1",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "switchValue",
-													"value": "Id2"
-												}
-											}
-										]
+								"waitOnCompletion": false,
+								"parameters": {
+									"body": {
+										"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
+										"type": "Expression"
 									},
-									{
-										"value": "2",
-										"activities": [
-											{
-												"name": "Exec_dvOperation_Identity2",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"policy": {
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "cWebActivity - CCM - dvOperationIdentity3",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": false,
-													"parameters": {
-														"body": {
-															"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
-															"type": "Expression"
-														},
-														"timeout": "0.00:05:00",
-														"dataverseBaseUrl": {
-															"value": "@pipeline().parameters.dataverseBaseUrl",
-															"type": "Expression"
-														},
-														"entitySetName": {
-															"value": "@pipeline().parameters.entitySetName",
-															"type": "Expression"
-														},
-														"MSCRMBypassBusinessLogicExecution": {
-															"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-															"type": "Expression"
-														},
-														"MSCRMSuppressCallbackRegistrationExpanderJob": {
-															"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
-															"type": "Expression"
-														},
-														"dvOperation": {
-															"value": "@pipeline().parameters.dvOperation",
-															"type": "Expression"
-														},
-														"claimRunId": {
-															"value": "@pipeline().parameters.claimRunId",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "Success_FinalizeAccountStagingForClaim_Id2",
-												"type": "Lookup",
-												"dependsOn": [
-													{
-														"activity": "Exec_dvOperation_Identity2",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "AzureSqlSource",
-														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"dataset": {
-														"referenceName": "DS_LegacyContact_SQL",
-														"type": "DatasetReference"
-													}
-												}
-											},
-											{
-												"name": "Fail_FinalizeAccountStagingForClaim_Id2",
-												"type": "Lookup",
-												"dependsOn": [
-													{
-														"activity": "Exec_dvOperation_Identity2",
-														"dependencyConditions": [
-															"Failed"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "AzureSqlSource",
-														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"dataset": {
-														"referenceName": "DS_LegacyContact_SQL",
-														"type": "DatasetReference"
-													}
-												}
-											},
-											{
-												"name": "Set-switchValue2",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Success_FinalizeAccountStagingForClaim_Id2",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "switchValue",
-													"value": "Id0"
-												}
-											}
-										]
+									"timeout": "0.00:05:00",
+									"dataverseBaseUrl": {
+										"value": "@pipeline().parameters.dataverseBaseUrl",
+										"type": "Expression"
 									},
-									{
-										"value": "0",
-										"activities": [
-											{
-												"name": "Exec_dvOperation_Identity0",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"policy": {
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "cWebActivity - CCM - dvOperationIdentity1",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": false,
-													"parameters": {
-														"body": {
-															"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
-															"type": "Expression"
-														},
-														"timeout": "0.00:05:00",
-														"dataverseBaseUrl": {
-															"value": "@pipeline().parameters.dataverseBaseUrl",
-															"type": "Expression"
-														},
-														"entitySetName": {
-															"value": "@pipeline().parameters.entitySetName",
-															"type": "Expression"
-														},
-														"MSCRMBypassBusinessLogicExecution": {
-															"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-															"type": "Expression"
-														},
-														"MSCRMSuppressCallbackRegistrationExpanderJob": {
-															"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
-															"type": "Expression"
-														},
-														"dvOperation": {
-															"value": "@pipeline().parameters.dvOperation",
-															"type": "Expression"
-														},
-														"claimRunId": {
-															"value": "@pipeline().parameters.claimRunId",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "Success_FinalizeAccountStagingForClaim_Id0",
-												"type": "Lookup",
-												"dependsOn": [
-													{
-														"activity": "Exec_dvOperation_Identity0",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "AzureSqlSource",
-														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"dataset": {
-														"referenceName": "DS_LegacyContact_SQL",
-														"type": "DatasetReference"
-													}
-												}
-											},
-											{
-												"name": "Fail_FinalizeAccountStagingForClaim_Id0",
-												"type": "Lookup",
-												"dependsOn": [
-													{
-														"activity": "Exec_dvOperation_Identity0",
-														"dependencyConditions": [
-															"Failed"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "AzureSqlSource",
-														"sqlReaderQuery": {
-															"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"dataset": {
-														"referenceName": "DS_LegacyContact_SQL",
-														"type": "DatasetReference"
-													}
-												}
-											},
-											{
-												"name": "Set-swtichValue0",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Success_FinalizeAccountStagingForClaim_Id0",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "switchValue",
-													"value": "Id1"
-												}
-											}
-										]
+									"entitySetName": {
+										"value": "@pipeline().parameters.entitySetName",
+										"type": "Expression"
+									},
+									"MSCRMBypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"MSCRMSuppressCallbackRegistrationExpanderJob": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									},
+									"dvOperation": {
+										"value": "@pipeline().parameters.dvOperation",
+										"type": "Expression"
+									},
+									"claimRunId": {
+										"value": "@pipeline().parameters.claimRunId",
+										"type": "Expression"
 									}
-								],
-								"defaultActivities": [
-									{
-										"name": "Exec_dvOperation_Identity",
-										"type": "ExecutePipeline",
-										"dependsOn": [],
-										"policy": {
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"pipeline": {
-												"referenceName": "cWebActivity - CCM - dvOperationIdentity1",
-												"type": "PipelineReference"
-											},
-											"waitOnCompletion": false,
-											"parameters": {
-												"body": {
-													"value": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
-													"type": "Expression"
-												},
-												"timeout": "0.00:05:00",
-												"dataverseBaseUrl": {
-													"value": "@pipeline().parameters.dataverseBaseUrl",
-													"type": "Expression"
-												},
-												"entitySetName": {
-													"value": "@pipeline().parameters.entitySetName",
-													"type": "Expression"
-												},
-												"MSCRMBypassBusinessLogicExecution": {
-													"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-													"type": "Expression"
-												},
-												"MSCRMSuppressCallbackRegistrationExpanderJob": {
-													"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
-													"type": "Expression"
-												},
-												"dvOperation": {
-													"value": "@pipeline().parameters.dvOperation",
-													"type": "Expression"
-												},
-												"claimRunId": {
-													"value": "@pipeline().parameters.claimRunId",
-													"type": "Expression"
-												}
-											}
-										}
+								}
+							}
+						},
+						{
+							"name": "Success_FinalizeAccountStagingForClaim_Id2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Exec_dvOperation_Identity2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
+										"type": "Expression"
 									},
-									{
-										"name": "Success_FinalizeAccountStagingForClaim_Id",
-										"type": "Lookup",
-										"dependsOn": [
-											{
-												"activity": "Exec_dvOperation_Identity",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "AzureSqlSource",
-												"sqlReaderQuery": {
-													"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
-													"type": "Expression"
-												},
-												"queryTimeout": "02:00:00",
-												"partitionOption": "None"
-											},
-											"dataset": {
-												"referenceName": "DS_LegacyContact_SQL",
-												"type": "DatasetReference"
-											}
-										}
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Fail_FinalizeAccountStagingForClaim_Id2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Exec_dvOperation_Identity2",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
+										"type": "Expression"
 									},
-									{
-										"name": "Fail_FinalizeAccountStagingForClaim_Id",
-										"type": "Lookup",
-										"dependsOn": [
-											{
-												"activity": "Exec_dvOperation_Identity",
-												"dependencyConditions": [
-													"Failed"
-												]
-											}
-										],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "AzureSqlSource",
-												"sqlReaderQuery": {
-													"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
-													"type": "Expression"
-												},
-												"queryTimeout": "02:00:00",
-												"partitionOption": "None"
-											},
-											"dataset": {
-												"referenceName": "DS_LegacyContact_SQL",
-												"type": "DatasetReference"
-											}
-										}
-									},
-									{
-										"name": "Set _switchValue3",
-										"type": "SetVariable",
-										"dependsOn": [
-											{
-												"activity": "Success_FinalizeAccountStagingForClaim_Id",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
-										"policy": {
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"variableName": "switchValue",
-											"value": "Id0"
-										}
-									}
-								]
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Set-switchValue2",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim_Id2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "switchValue",
+								"value": "Id0"
 							}
 						}
 					]
