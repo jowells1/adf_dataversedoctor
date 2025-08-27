@@ -582,7 +582,7 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 3000
+				"defaultValue": 100
 			},
 			"perRequest": {
 				"type": "Int",
