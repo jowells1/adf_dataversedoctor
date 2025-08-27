@@ -459,6 +459,10 @@
 								"body": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 								"authentication": {
 									"resource": "@pipeline().parameters.dataverseBaseUrl",
+									"credential": {
+										"referenceName": "DataverseDoctor_jowells_Identity1",
+										"type": "CredentialReference"
+									},
 									"type": "UserAssignedManagedIdentity"
 								}
 							}
