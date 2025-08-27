@@ -395,7 +395,7 @@
 									"MSCRM.SuppressCallbackRegistrationExpanderJob": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob"
 								},
 								"url": {
-									"value": "abc",
+									"value": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
 									"type": "Expression"
 								},
 								"body": {
