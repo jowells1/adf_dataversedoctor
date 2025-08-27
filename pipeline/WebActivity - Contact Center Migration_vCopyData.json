@@ -466,17 +466,6 @@
 										},
 										{
 											"source": {
-												"name": "CreatedOn",
-												"type": "DateTime",
-												"physicalType": "datetime"
-											},
-											"sink": {
-												"name": "createdon",
-												"type": "DateTime"
-											}
-										},
-										{
-											"source": {
 												"name": "EmailAddress1",
 												"type": "String",
 												"physicalType": "nvarchar"
@@ -498,84 +487,20 @@
 											}
 										},
 										{
+											"source": {
+												"name": "new_sourceid"
+											},
 											"sink": {
 												"name": "new_sourceid",
 												"type": "String"
 											}
 										},
 										{
-											"sink": {
-												"name": "numberofemployees",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "onholdtime",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "opendeals",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "opendeals_date",
-												"type": "DateTime"
-											}
-										},
-										{
-											"sink": {
-												"name": "opendeals_state",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue",
-												"type": "Decimal"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue_base",
-												"type": "Decimal"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue_date",
-												"type": "DateTime"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue_state",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "originatingleadid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "originatingleadidname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "originatingleadidyominame",
-												"type": "String"
-											}
-										},
-										{
+											"source": {
+												"name": "CreatedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
 											"sink": {
 												"name": "overriddencreatedon",
 												"type": "DateTime"
@@ -590,24 +515,6 @@
 											"sink": {
 												"name": "ownerid",
 												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "owneridname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "owneridtype",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "owneridyominame",
-												"type": "String"
 											}
 										},
 										{
