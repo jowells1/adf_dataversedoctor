@@ -393,6 +393,12 @@
 									"dependencyConditions": [
 										"Failed"
 									]
+								},
+								{
+									"activity": "dvOperation_Identity1",
+									"dependencyConditions": [
+										"Failed"
+									]
 								}
 							],
 							"userProperties": [],
@@ -446,7 +452,16 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"method": "POST",
+								"url": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
+								"body": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
+								"authentication": {
+									"resource": "@pipeline().parameters.dataverseBaseUrl",
+									"type": "UserAssignedManagedIdentity"
+								}
+							}
 						}
 					],
 					"timeout": "0.01:00:00"
