@@ -455,7 +455,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "claimRunId",
+								"variableName": "claimRunId_1",
 								"value": {
 									"value": "@guid()",
 									"type": "Expression"
@@ -527,7 +527,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "targets",
+											"variableName": "targets_1",
 											"value": [
 												"@json('[]')"
 											]
@@ -579,6 +579,7 @@
 													"type": "Expression"
 												},
 												"queryTimeout": "02:00:00",
+												"isolationLevel": "ReadCommitted",
 												"partitionOption": "None"
 											},
 											"dataset": {
@@ -604,7 +605,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "targets",
+											"variableName": "targets_1",
 											"value": {
 												"value": "@json(activity('usp_GetAccountTargetsForClaim_1').output.firstRow.targets_json)",
 												"type": "Expression"
@@ -638,6 +639,7 @@
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
 									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
 								},
 								"dataset": {
@@ -694,7 +696,7 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"targets": {
-										"value": "@variables('targets')",
+										"value": "@variables('targets_1')",
 										"type": "Expression"
 									},
 									"perRequest": {
@@ -714,7 +716,7 @@
 										"type": "Expression"
 									},
 									"claimRunId": {
-										"value": "@variables('claimRunId')",
+										"value": "@variables('claimRunId_1')",
 										"type": "Expression"
 									},
 									"MSCRM_BypassBusinessLogicExecution": {
@@ -805,7 +807,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "claimRunId",
+								"variableName": "claimRunId_2",
 								"value": {
 									"value": "@guid()",
 									"type": "Expression"
@@ -839,6 +841,7 @@
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
 								},
 								"dataset": {
@@ -876,7 +879,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "targets",
+											"variableName": "targets_2",
 											"value": [
 												"@json('[]')"
 											]
@@ -928,6 +931,7 @@
 													"type": "Expression"
 												},
 												"queryTimeout": "02:00:00",
+												"isolationLevel": "ReadCommitted",
 												"partitionOption": "None"
 											},
 											"dataset": {
@@ -953,7 +957,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "targets",
+											"variableName": "targets_2",
 											"value": {
 												"value": "@json(activity('usp_GetAccountTargetsForClaim_2').output.firstRow.targets_json)",
 												"type": "Expression"
@@ -1043,7 +1047,7 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"targets": {
-										"value": "@variables('targets')",
+										"value": "@variables('targets_2')",
 										"type": "Expression"
 									},
 									"perRequest": {
@@ -1063,7 +1067,7 @@
 										"type": "Expression"
 									},
 									"claimRunId": {
-										"value": "@variables('claimRunId')",
+										"value": "@variables('claimRunId_2')",
 										"type": "Expression"
 									},
 									"MSCRM_BypassBusinessLogicExecution": {
@@ -1182,6 +1186,18 @@
 			},
 			"lastClaimedCount": {
 				"type": "Integer"
+			},
+			"claimRunId_1": {
+				"type": "String"
+			},
+			"claimRunId_2": {
+				"type": "String"
+			},
+			"targets_1": {
+				"type": "Array"
+			},
+			"targets_2": {
+				"type": "Array"
 			}
 		},
 		"annotations": [
