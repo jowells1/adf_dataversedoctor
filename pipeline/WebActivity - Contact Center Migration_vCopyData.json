@@ -288,7 +288,7 @@
 									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
 									"bypassPowerAutomateFlows": true
 								},
-								"enableStaging": true,
+								"enableStaging": false,
 								"parallelCopies": 40,
 								"dataIntegrationUnits": 32,
 								"translator": {
@@ -536,6 +536,12 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
+								},
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
 							"policy": {
@@ -580,50 +586,6 @@
 								"variableName": "remainingCount",
 								"value": {
 									"value": "@int(activity('Get_RemainingCount_Pending_copy1').output.firstRow.remainingCount)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Fail1_copy1",
-							"type": "Fail",
-							"dependsOn": [
-								{
-									"activity": "CopyData-WebActivity_copy1",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"message": {
-									"value": "@activity('CopyData-WebActivity_copy1').output",
-									"type": "Expression"
-								},
-								"errorCode": "500"
-							}
-						},
-						{
-							"name": "Set_RemainingCount_ErrorZero_copy1",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Fail1_copy1",
-									"dependencyConditions": [
-										"Completed"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "remainingCount",
-								"value": {
-									"value": "@int('0')",
 									"type": "Expression"
 								}
 							}
