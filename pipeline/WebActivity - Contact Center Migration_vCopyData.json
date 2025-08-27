@@ -410,6 +410,18 @@
 									"type": "TabularTranslator",
 									"mappings": [
 										{
+											"sink": {
+												"name": "accountcategorycode",
+												"type": "Int32"
+											}
+										},
+										{
+											"sink": {
+												"name": "accountclassificationcode",
+												"type": "Int32"
+											}
+										},
+										{
 											"source": {
 												"name": "AccountId",
 												"type": "Guid",
@@ -432,6 +444,24 @@
 											}
 										},
 										{
+											"sink": {
+												"name": "accountratingcode",
+												"type": "Int32"
+											}
+										},
+										{
+											"sink": {
+												"name": "address1_addressid",
+												"type": "Guid"
+											}
+										},
+										{
+											"sink": {
+												"name": "address1_addresstypecode",
+												"type": "Int32"
+											}
+										},
+										{
 											"source": {
 												"name": "Address1_City",
 												"type": "String",
@@ -439,6 +469,18 @@
 											},
 											"sink": {
 												"name": "address1_city",
+												"type": "String"
+											}
+										},
+										{
+											"sink": {
+												"name": "address1_composite",
+												"type": "String"
+											}
+										},
+										{
+											"sink": {
+												"name": "address1_country",
 												"type": "String"
 											}
 										},
