@@ -848,6 +848,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Failed'';')",
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
