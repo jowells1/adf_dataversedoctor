@@ -151,6 +151,8 @@
 						{
 							"name": "If_Records_PrepareTargets",
 							"type": "IfCondition",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "sp_ClaimAccountStagingBatch",
@@ -387,7 +389,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@json(activity('usp_GetAccountTargetsForClaim').output.firstRow.targets_json)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaim @ClaimRunId = ''',\n    variables('claimRunId'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.batchSize),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
