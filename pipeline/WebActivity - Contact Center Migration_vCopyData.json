@@ -858,6 +858,38 @@
 									"type": "DatasetReference"
 								}
 							}
+						},
+						{
+							"name": "Success_FinalizeAccountStagingForClaim_Id2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData-WebActivity_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', pipeline().parameters.claimRunId, ''', @NewStatus=''Success'';')",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					],
 					"timeout": "0.01:00:00"
