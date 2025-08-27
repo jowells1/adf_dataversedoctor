@@ -334,7 +334,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"message": {
-									"value": "@activity('Execute_distributeClaims').output",
+									"value": "@activity('CopyData-WebActivity').output",
 									"type": "Expression"
 								},
 								"errorCode": "500"
