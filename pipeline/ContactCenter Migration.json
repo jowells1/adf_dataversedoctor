@@ -87,12 +87,9 @@
 									"partitionOption": "None"
 								},
 								"sink": {
-									"type": "RestSink",
-									"httpRequestTimeout": "00:05:00",
-									"requestInterval": 10,
-									"requestMethod": "POST",
-									"writeBatchSize": 10000,
-									"httpCompressionType": "none"
+									"type": "CommonDataServiceForAppsSink",
+									"writeBatchSize": 10,
+									"writeBehavior": "upsert"
 								},
 								"enableStaging": false,
 								"translator": {
@@ -179,7 +176,12 @@
 												"name": "createdon"
 											}
 										}
-									]
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
 								}
 							},
 							"inputs": [
@@ -190,7 +192,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "REST_DataverseDoctor_App1",
+									"referenceName": "DS_DV_Account_App1",
 									"type": "DatasetReference"
 								}
 							]
