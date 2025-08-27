@@ -477,60 +477,6 @@
 											}
 										},
 										{
-											"sink": {
-												"name": "entityimage_timestamp",
-												"type": "Int64"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_accountkpiid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_accountkpiidname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_gdproptout",
-												"type": "Boolean"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_primarytimezone",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_salesaccelerationinsightid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_salesaccelerationinsightidname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_segmentid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "msdyn_segmentidname",
-												"type": "String"
-											}
-										},
-										{
 											"source": {
 												"name": "Name",
 												"type": "String",
@@ -542,6 +488,9 @@
 											}
 										},
 										{
+											"source": {
+												"name": "AccountId"
+											},
 											"sink": {
 												"name": "new_sourceid",
 												"type": "String"
