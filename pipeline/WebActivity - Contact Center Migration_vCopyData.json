@@ -443,15 +443,47 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@json(activity('usp_GetAccountTargetsForClaim').output.firstRow.targets_json)",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "CommonDataServiceForAppsSink",
+									"writeBatchSize": 10,
+									"writeBehavior": "upsert",
+									"ignoreNullValues": false,
+									"alternateKeyName": "new_sourceid",
+									"bypassPowerAutomateFlows": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
 									"referenceName": "DS_LegacyContact_SQL",
 									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_DV_Account_App1",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": {
+											"value": "@pipeline().parameters.entitySetName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
