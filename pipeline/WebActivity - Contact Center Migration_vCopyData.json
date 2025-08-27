@@ -268,7 +268,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Execute_distributeClaims",
+									"activity": "CopyData-WebActivity",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -321,68 +321,11 @@
 							}
 						},
 						{
-							"name": "Execute_distributeClaims",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "If_Records_PrepareTargets",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "cWebActivity - CCM - distributeClaims_copy1",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"targets": {
-										"value": "@variables('targets')",
-										"type": "Expression"
-									},
-									"perRequest": {
-										"value": "@pipeline().parameters.batchSize",
-										"type": "Expression"
-									},
-									"dataverseBaseUrl": {
-										"value": "@pipeline().parameters.dataverseBaseUrl",
-										"type": "Expression"
-									},
-									"entitySetName": {
-										"value": "@pipeline().parameters.entitySetName",
-										"type": "Expression"
-									},
-									"dvOperation": {
-										"value": "@pipeline().parameters.dvOperation",
-										"type": "Expression"
-									},
-									"claimRunId": {
-										"value": "@variables('claimRunId')",
-										"type": "Expression"
-									},
-									"MSCRM_BypassBusinessLogicExecution": {
-										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-										"type": "Expression"
-									},
-									"MSCRM_SuppressCallbackRegistrationExpanderJob": {
-										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
-										"type": "Expression"
-									}
-								}
-							}
-						},
-						{
 							"name": "Fail1",
 							"type": "Fail",
 							"dependsOn": [
 								{
-									"activity": "Execute_distributeClaims",
+									"activity": "CopyData-WebActivity",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -456,7 +399,9 @@
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
 									"alternateKeyName": "new_sourceid",
-									"bypassPowerAutomateFlows": false
+									"maxConcurrentConnections": 200,
+									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
+									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
 								"translator": {
