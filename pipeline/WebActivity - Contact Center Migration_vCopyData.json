@@ -532,13 +532,13 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "CopyData-WebActivity_copy1",
+									"activity": "Success_FinalizeAccountStagingForClaim",
 									"dependencyConditions": [
 										"Succeeded"
 									]
 								},
 								{
-									"activity": "Success_FinalizeAccountStagingForClaim",
+									"activity": "Fail_FinalizeAccountStagingForClaim",
 									"dependencyConditions": [
 										"Succeeded"
 									]
