@@ -465,7 +465,7 @@
 			},
 			"entitySetName": {
 				"type": "String",
-				"defaultValue": "accounts"
+				"defaultValue": "account"
 			},
 			"batchSize": {
 				"type": "Int",
