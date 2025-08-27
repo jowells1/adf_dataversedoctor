@@ -408,6 +408,24 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "Name"
+											},
+											"sink": {
+												"name": "name"
+											}
+										},
+										{
+											"source": {
+												"name": "AccountNumber"
+											},
+											"sink": {
+												"name": "accountnumber"
+											}
+										}
+									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,
