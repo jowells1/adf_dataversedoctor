@@ -829,7 +829,14 @@
 						{
 							"name": "FailProcessedRecord",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "CopyData-WebActivity_copy1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -837,7 +844,19 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					],
 					"timeout": "0.01:00:00"
