@@ -499,8 +499,7 @@
 										},
 										{
 											"source": {
-												"name": "ownerid@odata.bind",
-												"type": "Guid",
+												"name": "ownerid@EntityReference",
 												"physicalType": "uniqueidentifier"
 											},
 											"sink": {
