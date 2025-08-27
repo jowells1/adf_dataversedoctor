@@ -497,8 +497,7 @@
 										},
 										{
 											"source": {
-												"name": "OwnerId",
-												"type": "Guid",
+												"name": "ownerid@odata.bind",
 												"physicalType": "uniqueidentifier"
 											},
 											"sink": {
