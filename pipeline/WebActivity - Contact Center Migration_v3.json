@@ -269,12 +269,6 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Execute_distributeClaims",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
 									"activity": "dvOperation_Identity1",
 									"dependencyConditions": [
 										"Succeeded"
@@ -328,72 +322,9 @@
 							}
 						},
 						{
-							"name": "Execute_distributeClaims",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "If_Records_PrepareTargets",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "cWebActivity - CCM - distributeClaims_copy1",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"targets": {
-										"value": "@variables('targets')",
-										"type": "Expression"
-									},
-									"perRequest": {
-										"value": "@pipeline().parameters.perRequest",
-										"type": "Expression"
-									},
-									"dataverseBaseUrl": {
-										"value": "@pipeline().parameters.dataverseBaseUrl",
-										"type": "Expression"
-									},
-									"entitySetName": {
-										"value": "@pipeline().parameters.entitySetName",
-										"type": "Expression"
-									},
-									"dvOperation": {
-										"value": "@pipeline().parameters.dvOperation",
-										"type": "Expression"
-									},
-									"claimRunId": {
-										"value": "@variables('claimRunId')",
-										"type": "Expression"
-									},
-									"MSCRM_BypassBusinessLogicExecution": {
-										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-										"type": "Expression"
-									},
-									"MSCRM_SuppressCallbackRegistrationExpanderJob": {
-										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
-										"type": "Expression"
-									}
-								}
-							}
-						},
-						{
 							"name": "Fail1",
 							"type": "Fail",
 							"dependsOn": [
-								{
-									"activity": "Execute_distributeClaims",
-									"dependencyConditions": [
-										"Failed"
-									]
-								},
 								{
 									"activity": "dvOperation_Identity1",
 									"dependencyConditions": [
@@ -455,6 +386,14 @@
 							"userProperties": [],
 							"typeProperties": {
 								"method": "POST",
+								"headers": {
+									"OData-MaxVersion": "4.0",
+									"OData-Version": "4.0",
+									"Accept": "application/json",
+									"Content-Type": "application/json",
+									"MSCRM.BypassBusinessLogicExecution": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+									"MSCRM.SuppressCallbackRegistrationExpanderJob": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob"
+								},
 								"url": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
 								"body": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
 								"authentication": {
