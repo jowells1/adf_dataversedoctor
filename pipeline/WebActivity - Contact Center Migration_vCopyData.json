@@ -577,7 +577,7 @@
 							"typeProperties": {
 								"variableName": "remainingCount",
 								"value": {
-									"value": "@int(activity('Get_RemainingCount_Pending').output.firstRow.remainingCount)",
+									"value": "@int(activity('Get_RemainingCount_Pending_copy1').output.firstRow.remainingCount)",
 									"type": "Expression"
 								}
 							}
@@ -596,7 +596,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"message": {
-									"value": "@activity('CopyData-WebActivity').output",
+									"value": "@activity('CopyData-WebActivity_copy1').output",
 									"type": "Expression"
 								},
 								"errorCode": "500"
