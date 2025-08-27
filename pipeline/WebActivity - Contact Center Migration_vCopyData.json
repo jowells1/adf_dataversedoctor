@@ -513,7 +513,7 @@
 												"physicalType": "uniqueidentifier"
 											},
 											"sink": {
-												"name": "ownerid",
+												"name": "owninguser",
 												"type": "Guid"
 											}
 										},
