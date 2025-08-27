@@ -488,7 +488,7 @@
 										},
 										{
 											"source": {
-												"name": "new_sourceid"
+												"name": "new_SourceId"
 											},
 											"sink": {
 												"name": "new_sourceid",
