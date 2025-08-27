@@ -414,6 +414,8 @@
 				"name": "Until_AllClaimedAndProcessed_1",
 				"description": "",
 				"type": "Until",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set_RemainingCount_int",
@@ -764,6 +766,8 @@
 				"name": "Until_AllClaimedAndProcessed_2",
 				"description": "",
 				"type": "Until",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set_RemainingCount_int",
@@ -1122,11 +1126,11 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 3000
+				"defaultValue": 1000
 			},
 			"perRequest": {
 				"type": "Int",
-				"defaultValue": 100
+				"defaultValue": 1000
 			},
 			"dvOperation": {
 				"type": "string",
