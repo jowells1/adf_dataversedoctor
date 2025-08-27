@@ -843,11 +843,11 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 100
+				"defaultValue": 3000
 			},
 			"perRequest": {
 				"type": "Int",
-				"defaultValue": 100
+				"defaultValue": 3000
 			},
 			"dvOperation": {
 				"type": "string",
