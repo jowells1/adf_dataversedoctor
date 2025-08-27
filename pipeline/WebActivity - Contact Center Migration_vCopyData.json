@@ -509,9 +509,12 @@
 											}
 										},
 										{
+											"source": {
+												"name": ""
+											},
 											"sink": {
-												"name": "ownershipcode",
-												"type": "Int32"
+												"name": "owneridtype",
+												"type": "String"
 											}
 										},
 										{
