@@ -827,7 +827,7 @@
 							]
 						},
 						{
-							"name": "FailProcessedRecord",
+							"name": "Fail_FinalizeAccountStagingForClaim",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -860,7 +860,7 @@
 							}
 						},
 						{
-							"name": "Success_FinalizeAccountStagingForClaim_Id2",
+							"name": "Success_FinalizeAccountStagingForClaim",
 							"type": "Lookup",
 							"dependsOn": [
 								{
