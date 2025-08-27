@@ -395,7 +395,10 @@
 									"MSCRM.SuppressCallbackRegistrationExpanderJob": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob"
 								},
 								"url": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
-								"body": "@json(concat('{\"Targets\":', string(take(skip(pipeline().parameters.targets, mul(pipeline().parameters.perRequest, item())), pipeline().parameters.perRequest)), '}'))",
+								"body": {
+									"value": "@json(concat('{\"Targets\":', string(variables('targets')), '}'))",
+									"type": "Expression"
+								},
 								"authentication": {
 									"resource": "@pipeline().parameters.dataverseBaseUrl",
 									"credential": {
