@@ -139,6 +139,7 @@
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
 								},
 								"dataset": {
@@ -488,6 +489,7 @@
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
 								},
 								"dataset": {
