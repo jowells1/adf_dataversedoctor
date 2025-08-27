@@ -401,7 +401,7 @@
 									"writeBatchSize": 10,
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
-									"alternateKeyName": "n",
+									"alternateKeyName": "new_sourceid",
 									"maxConcurrentConnections": 200,
 									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
 									"bypassPowerAutomateFlows": true
@@ -492,8 +492,8 @@
 												"name": "AccountId"
 											},
 											"sink": {
-												"name": "new_sourceid",
-												"type": "String"
+												"name": "accountid",
+												"type": "Guid"
 											}
 										},
 										{
