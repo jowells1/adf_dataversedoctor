@@ -394,7 +394,10 @@
 									"MSCRM.BypassBusinessLogicExecution": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
 									"MSCRM.SuppressCallbackRegistrationExpanderJob": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob"
 								},
-								"url": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
+								"url": {
+									"value": "abc",
+									"type": "Expression"
+								},
 								"body": {
 									"value": "@json(concat('{\"Targets\":', string(variables('targets')), '}'))",
 									"type": "Expression"
