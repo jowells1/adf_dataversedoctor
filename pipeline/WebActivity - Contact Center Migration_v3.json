@@ -391,8 +391,14 @@
 									"OData-Version": "4.0",
 									"Accept": "application/json",
 									"Content-Type": "application/json",
-									"MSCRM.BypassBusinessLogicExecution": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
-									"MSCRM.SuppressCallbackRegistrationExpanderJob": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob"
+									"MSCRM.BypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"MSCRM.SuppressCallbackRegistrationExpanderJob": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									}
 								},
 								"url": {
 									"value": "@{concat(pipeline().parameters.dataverseBaseUrl,'/api/data/v9.2/', pipeline().parameters.entitySetName, '/',pipeline().parameters.dvOperation)}",
@@ -403,7 +409,10 @@
 									"type": "Expression"
 								},
 								"authentication": {
-									"resource": "@pipeline().parameters.dataverseBaseUrl",
+									"resource": {
+										"value": "@pipeline().parameters.dataverseBaseUrl",
+										"type": "Expression"
+									},
 									"credential": {
 										"referenceName": "DataverseDoctor_jowells_Identity1",
 										"type": "CredentialReference"
@@ -1132,11 +1141,11 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 1000
+				"defaultValue": 3000
 			},
 			"perRequest": {
 				"type": "Int",
-				"defaultValue": 1000
+				"defaultValue": 3000
 			},
 			"dvOperation": {
 				"type": "string",
