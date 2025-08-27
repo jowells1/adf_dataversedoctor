@@ -510,106 +510,10 @@
 										},
 										{
 											"source": {
-												"name": ""
+												"name": "owneridtype"
 											},
 											"sink": {
 												"name": "owneridtype",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "owningbusinessunit",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "owningbusinessunitname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "owningteam",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "owninguser",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "parentaccountid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "parentaccountidname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "parentaccountidyominame",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "participatesinworkflow",
-												"type": "Boolean"
-											}
-										},
-										{
-											"sink": {
-												"name": "paymenttermscode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredappointmentdaycode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredappointmenttimecode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredcontactmethodcode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredequipmentid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredequipmentidname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredserviceid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "preferredserviceidname",
 												"type": "String"
 											}
 										},
