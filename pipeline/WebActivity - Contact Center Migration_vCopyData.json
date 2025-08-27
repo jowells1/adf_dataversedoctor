@@ -411,24 +411,6 @@
 									"type": "TabularTranslator",
 									"mappings": [
 										{
-											"sink": {
-												"name": "accountcategorycode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "accountclassificationcode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "accountid",
-												"type": "Guid"
-											}
-										},
-										{
 											"source": {
 												"name": "AccountNumber",
 												"type": "String",
@@ -437,24 +419,6 @@
 											"sink": {
 												"name": "accountnumber",
 												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "accountratingcode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_addressid",
-												"type": "Guid"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_addresstypecode",
-												"type": "Int32"
 											}
 										},
 										{
@@ -469,104 +433,24 @@
 											}
 										},
 										{
-											"sink": {
-												"name": "address1_composite",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_country",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_county",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_fax",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_freighttermscode",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_latitude",
-												"type": "Double"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_line1",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_line2",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_line3",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_longitude",
-												"type": "Double"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_name",
-												"type": "String"
-											}
-										},
-										{
+											"source": {
+												"name": "Address1_PostCode",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
 											"sink": {
 												"name": "address1_postalcode",
 												"type": "String"
 											}
 										},
 										{
-											"sink": {
-												"name": "address1_postofficebox",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_primarycontactname",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_shippingmethodcode",
-												"type": "Int32"
-											}
-										},
-										{
+											"source": {
+												"name": "Address1_State",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
 											"sink": {
 												"name": "address1_stateorprovince",
-												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "address1_telephone1",
 												"type": "String"
 											}
 										},
@@ -1195,54 +1079,6 @@
 											"sink": {
 												"name": "new_sourceid",
 												"type": "String"
-											}
-										},
-										{
-											"sink": {
-												"name": "numberofemployees",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "onholdtime",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "opendeals",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "opendeals_date",
-												"type": "DateTime"
-											}
-										},
-										{
-											"sink": {
-												"name": "opendeals_state",
-												"type": "Int32"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue",
-												"type": "Decimal"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue_base",
-												"type": "Decimal"
-											}
-										},
-										{
-											"sink": {
-												"name": "openrevenue_date",
-												"type": "DateTime"
 											}
 										},
 										{
