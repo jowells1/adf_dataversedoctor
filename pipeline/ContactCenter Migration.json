@@ -87,13 +87,12 @@
 									"partitionOption": "None"
 								},
 								"sink": {
-									"type": "CommonDataServiceForAppsSink",
-									"writeBatchSize": 10,
-									"writeBehavior": "upsert",
-									"ignoreNullValues": false,
-									"alternateKeyName": "new_sourceid",
-									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
-									"bypassPowerAutomateFlows": true
+									"type": "RestSink",
+									"httpRequestTimeout": "00:05:00",
+									"requestInterval": 10,
+									"requestMethod": "POST",
+									"writeBatchSize": 10000,
+									"httpCompressionType": "none"
 								},
 								"enableStaging": false,
 								"translator": {
@@ -174,20 +173,13 @@
 										{
 											"source": {
 												"name": "CreatedOn",
-												"type": "datetime",
-												"scale": 3,
-												"precision": 23
+												"type": "datetime"
 											},
 											"sink": {
 												"name": "createdon"
 											}
 										}
-									],
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
+									]
 								}
 							},
 							"inputs": [
@@ -198,11 +190,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App1",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityLogicalName": "Account"
-									}
+									"referenceName": "REST_DataverseDoctor_App1",
+									"type": "DatasetReference"
 								}
 							]
 						}
