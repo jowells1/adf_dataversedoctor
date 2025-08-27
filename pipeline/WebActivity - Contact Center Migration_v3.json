@@ -273,6 +273,12 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
+								},
+								{
+									"activity": "dvOperation_Identity1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
 							"policy": {
@@ -421,6 +427,26 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "dvOperation_Identity1",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "If_Records_PrepareTargets",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
 						}
 					],
 					"timeout": "0.01:00:00"
