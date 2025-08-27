@@ -401,7 +401,7 @@
 									"writeBatchSize": 10,
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
-									"alternateKeyName": "",
+									"alternateKeyName": "n",
 									"maxConcurrentConnections": 200,
 									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
 									"bypassPowerAutomateFlows": true
