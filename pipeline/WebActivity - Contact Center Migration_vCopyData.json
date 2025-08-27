@@ -288,7 +288,9 @@
 									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
 									"bypassPowerAutomateFlows": true
 								},
-								"enableStaging": false,
+								"enableStaging": true,
+								"parallelCopies": 40,
+								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
