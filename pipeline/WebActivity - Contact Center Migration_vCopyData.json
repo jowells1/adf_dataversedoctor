@@ -457,7 +457,14 @@
 				"name": "Until_AllClaimedAndProcessed_copy1",
 				"description": "",
 				"type": "Until",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set_RemainingCount_int",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -824,6 +831,7 @@
 				}
 			}
 		],
+		"concurrency": 10,
 		"parameters": {
 			"dataverseBaseUrl": {
 				"type": "String",
