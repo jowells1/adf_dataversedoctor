@@ -1141,11 +1141,11 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 3000
+				"defaultValue": 100
 			},
 			"perRequest": {
 				"type": "Int",
-				"defaultValue": 3000
+				"defaultValue": 100
 			},
 			"dvOperation": {
 				"type": "string",
@@ -1153,7 +1153,7 @@
 			},
 			"numberOfChildPipe": {
 				"type": "int",
-				"defaultValue": 3
+				"defaultValue": 1
 			},
 			"MSCRM_BypassBusinessLogicExecution": {
 				"type": "string",
