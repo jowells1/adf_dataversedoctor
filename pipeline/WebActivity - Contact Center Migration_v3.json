@@ -335,7 +335,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"message": {
-									"value": "@activity('Execute_distributeClaims').output",
+									"value": "@activity('dvOperation_Identity1').output",
 									"type": "Expression"
 								},
 								"errorCode": "500"
