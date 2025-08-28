@@ -158,12 +158,6 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
-								},
-								{
-									"activity": "Fail_FinalizeAccountStagingForClaim_0",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"policy": {
@@ -502,7 +496,14 @@
 						{
 							"name": "Get_RemainingCount_Pending_0_copy1",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -523,6 +524,30 @@
 									"type": "DatasetReference"
 								},
 								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_0_copy1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_0_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_0').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
 							}
 						}
 					],
