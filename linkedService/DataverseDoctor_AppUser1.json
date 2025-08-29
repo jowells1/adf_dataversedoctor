@@ -13,6 +13,10 @@
 				"referenceName": "DataverseDoctor_jowells_Identity1",
 				"type": "CredentialReference"
 			}
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime-LG",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
