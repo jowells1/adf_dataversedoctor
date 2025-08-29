@@ -1499,11 +1499,11 @@
 			},
 			"recordsToProcess": {
 				"type": "Int",
-				"defaultValue": 10000
+				"defaultValue": 100000
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 10000
+				"defaultValue": 100
 			},
 			"dvOperation": {
 				"type": "string",
@@ -1522,7 +1522,12 @@
 				"defaultValue": "true"
 			},
 			"maxDIU": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "32"
+			},
+			"copyParallelism": {
+				"type": "string",
+				"defaultValue": "40"
 			}
 		},
 		"variables": {
