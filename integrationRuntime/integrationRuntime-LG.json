@@ -8,7 +8,7 @@
 				"dataFlowProperties": {
 					"computeType": "General",
 					"coreCount": 32,
-					"timeToLive": 10,
+					"timeToLive": 0,
 					"cleanup": false,
 					"customProperties": []
 				}
