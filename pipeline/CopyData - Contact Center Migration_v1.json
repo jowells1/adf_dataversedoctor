@@ -1577,15 +1577,15 @@
 			},
 			"maxDIU": {
 				"type": "int",
-				"defaultValue": 32
+				"defaultValue": 50
 			},
 			"copyParallelism": {
 				"type": "int",
-				"defaultValue": 80
+				"defaultValue": 50
 			},
 			"maxCopyCurrentConnections": {
 				"type": "int",
-				"defaultValue": 25
+				"defaultValue": 50
 			},
 			"processBatch": {
 				"type": "int",
