@@ -246,7 +246,7 @@
 									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
-								"parallelCopies": 40,
+								"parallelCopies": 32,
 								"logSettings": {
 									"enableCopyActivityLog": true,
 									"copyActivityLogSettings": {
