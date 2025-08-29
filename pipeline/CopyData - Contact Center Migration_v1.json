@@ -260,7 +260,7 @@
 										}
 									}
 								},
-								"dataIntegrationUnits": 64,
+								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
@@ -725,6 +725,8 @@
 									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
+								"parallelCopies": 40,
+								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
