@@ -1581,7 +1581,7 @@
 			},
 			"copyParallelism": {
 				"type": "int",
-				"defaultValue": 32
+				"defaultValue": 50
 			},
 			"maxCopyCurrentConnections": {
 				"type": "int",
