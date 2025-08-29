@@ -258,6 +258,10 @@
 									}
 								},
 								"enableStaging": false,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
 								"logSettings": {
 									"enableCopyActivityLog": true,
 									"copyActivityLogSettings": {
@@ -1573,11 +1577,11 @@
 			},
 			"maxDIU": {
 				"type": "int",
-				"defaultValue": 50
+				"defaultValue": 32
 			},
 			"copyParallelism": {
 				"type": "int",
-				"defaultValue": 50
+				"defaultValue": 32
 			},
 			"maxCopyCurrentConnections": {
 				"type": "int",
