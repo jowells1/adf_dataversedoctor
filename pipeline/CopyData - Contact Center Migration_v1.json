@@ -248,8 +248,14 @@
 										"value": "@pipeline().parameters.maxCopyCurrentConnections",
 										"type": "Expression"
 									},
-									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
-									"bypassPowerAutomateFlows": true
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									}
 								},
 								"enableStaging": false,
 								"parallelCopies": {
@@ -749,7 +755,10 @@
 									}
 								},
 								"enableStaging": false,
-								"parallelCopies": 40,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
 								"dataIntegrationUnits": {
 									"value": "@pipeline().parameters.maxDIU",
 									"type": "Expression"
@@ -1210,7 +1219,10 @@
 								},
 								"sink": {
 									"type": "CommonDataServiceForAppsSink",
-									"writeBatchSize": 100,
+									"writeBatchSize": {
+										"value": "@pipeline().parameters.batchSize",
+										"type": "Expression"
+									},
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
 									"maxConcurrentConnections": 50,
