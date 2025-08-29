@@ -11,6 +11,10 @@
 			"servicePrincipalId": "5d409776-54ee-478f-9af1-c2a8e0294e6d",
 			"servicePrincipalCredentialType": "ServicePrincipalKey",
 			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDJCNzY3MTE3LTZCNzItNEY5OS04MUY4LTZDOTZCMzMyRTRFQV80MTkyMzAyZS1lOGM2LTRmYTUtODZmNy0xMDJiYmNmZDgwYjUiDQp9"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime-LG",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
