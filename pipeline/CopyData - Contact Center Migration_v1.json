@@ -234,7 +234,11 @@
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
-									"partitionOption": "None"
+									"partitionOption": "None",
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
 								},
 								"sink": {
 									"type": "CommonDataServiceForAppsSink",
@@ -255,6 +259,10 @@
 									"bypassPowerAutomateFlows": {
 										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
 										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
 									}
 								},
 								"enableStaging": false,
@@ -731,7 +739,11 @@
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
-									"partitionOption": "None"
+									"partitionOption": "None",
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
 								},
 								"sink": {
 									"type": "CommonDataServiceForAppsSink",
@@ -752,6 +764,10 @@
 									"bypassPowerAutomateFlows": {
 										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
 										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
 									}
 								},
 								"enableStaging": false,
@@ -1215,7 +1231,11 @@
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
-									"partitionOption": "None"
+									"partitionOption": "None",
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
 								},
 								"sink": {
 									"type": "CommonDataServiceForAppsSink",
@@ -1236,6 +1256,10 @@
 									"bypassPowerAutomateFlows": {
 										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
 										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
 									}
 								},
 								"enableStaging": false,
