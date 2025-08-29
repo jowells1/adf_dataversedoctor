@@ -1553,11 +1553,11 @@
 			},
 			"recordsToProcess": {
 				"type": "Int",
-				"defaultValue": 3000
+				"defaultValue": 100000
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 10
+				"defaultValue": 25
 			},
 			"dvOperation": {
 				"type": "string",
@@ -1589,7 +1589,7 @@
 			},
 			"processBatch": {
 				"type": "int",
-				"defaultValue": 10000
+				"defaultValue": 1000
 			}
 		},
 		"variables": {
