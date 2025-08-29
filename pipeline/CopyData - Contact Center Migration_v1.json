@@ -246,6 +246,7 @@
 									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
+								"parallelCopies": 40,
 								"logSettings": {
 									"enableCopyActivityLog": true,
 									"copyActivityLogSettings": {
@@ -259,6 +260,7 @@
 										}
 									}
 								},
+								"dataIntegrationUnits": 64,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
