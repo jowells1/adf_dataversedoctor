@@ -1557,7 +1557,7 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 100
+				"defaultValue": 10
 			},
 			"dvOperation": {
 				"type": "string",
@@ -1581,11 +1581,11 @@
 			},
 			"copyParallelism": {
 				"type": "int",
-				"defaultValue": 40
+				"defaultValue": 80
 			},
 			"maxCopyCurrentConnections": {
 				"type": "int",
-				"defaultValue": 50
+				"defaultValue": 25
 			},
 			"processBatch": {
 				"type": "int",
