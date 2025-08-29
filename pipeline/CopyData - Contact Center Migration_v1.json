@@ -912,14 +912,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App1",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityLogicalName": {
-											"value": "@pipeline().parameters.entitySetName",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "DS_DV_Account_App2",
+									"type": "DatasetReference"
 								}
 							]
 						},
@@ -1396,14 +1390,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App1",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityLogicalName": {
-											"value": "@pipeline().parameters.entitySetName",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "DS_DV_Account_App3",
+									"type": "DatasetReference"
 								}
 							]
 						},
