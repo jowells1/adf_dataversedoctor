@@ -1225,13 +1225,28 @@
 									},
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
-									"maxConcurrentConnections": 50,
-									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
-									"bypassPowerAutomateFlows": true
+									"maxConcurrentConnections": {
+										"value": "@pipeline().parameters.maxCopyCurrentConnections",
+										"type": "Expression"
+									},
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									}
 								},
 								"enableStaging": false,
-								"parallelCopies": 40,
-								"dataIntegrationUnits": 32,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
+								"dataIntegrationUnits": {
+									"value": "@pipeline().parameters.maxDIU",
+									"type": "Expression"
+								},
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
