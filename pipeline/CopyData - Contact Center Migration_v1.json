@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('remainingCount'), 0)",
+						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), 100000))",
 						"type": "Expression"
 					},
 					"activities": [
