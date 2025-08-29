@@ -258,10 +258,6 @@
 									}
 								},
 								"enableStaging": false,
-								"parallelCopies": {
-									"value": "@pipeline().parameters.copyParallelism",
-									"type": "Expression"
-								},
 								"logSettings": {
 									"enableCopyActivityLog": true,
 									"copyActivityLogSettings": {
