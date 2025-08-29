@@ -739,11 +739,21 @@
 										"value": "@pipeline().parameters.maxCopyCurrentConnections",
 										"type": "Expression"
 									},
-									"bypassPowerAutomateFlows": true
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									}
 								},
 								"enableStaging": false,
 								"parallelCopies": 40,
-								"dataIntegrationUnits": 32,
+								"dataIntegrationUnits": {
+									"value": "@pipeline().parameters.maxDIU",
+									"type": "Expression"
+								},
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
@@ -1535,8 +1545,8 @@
 				"defaultValue": "CustomSync, CustomAsync"
 			},
 			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
-				"type": "string",
-				"defaultValue": "true"
+				"type": "bool",
+				"defaultValue": true
 			},
 			"maxDIU": {
 				"type": "int",
