@@ -1553,7 +1553,7 @@
 			},
 			"recordsToProcess": {
 				"type": "Int",
-				"defaultValue": 100000
+				"defaultValue": 3000
 			},
 			"batchSize": {
 				"type": "Int",
