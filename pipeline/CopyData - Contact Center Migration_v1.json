@@ -1586,6 +1586,9 @@
 			"maxCopyCurrentConnections": {
 				"type": "int",
 				"defaultValue": 50
+			},
+			"p": {
+				"type": "string"
 			}
 		},
 		"variables": {
