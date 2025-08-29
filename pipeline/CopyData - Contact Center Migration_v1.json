@@ -246,7 +246,6 @@
 									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
-								"parallelCopies": 32,
 								"logSettings": {
 									"enableCopyActivityLog": true,
 									"copyActivityLogSettings": {
@@ -260,7 +259,6 @@
 										}
 									}
 								},
-								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
@@ -725,8 +723,6 @@
 									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
-								"parallelCopies": 40,
-								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
@@ -1191,8 +1187,6 @@
 									"bypassPowerAutomateFlows": true
 								},
 								"enableStaging": false,
-								"parallelCopies": 40,
-								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
