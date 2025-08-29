@@ -183,7 +183,7 @@
 							}
 						},
 						{
-							"name": "Set_RemainingCount_0",
+							"name": "Set_RemainingCount_0_Success",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -494,7 +494,7 @@
 							}
 						},
 						{
-							"name": "Get_RemainingCount_Pending_0_copy1",
+							"name": "Get_RemainingCount_Pending_0_Fail",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -527,11 +527,11 @@
 							}
 						},
 						{
-							"name": "Set_RemainingCount_0_copy1",
+							"name": "Set_RemainingCount_0_Fail",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Get_RemainingCount_Pending_0_copy1",
+									"activity": "Get_RemainingCount_Pending_0_Fail",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -545,7 +545,7 @@
 							"typeProperties": {
 								"variableName": "remainingCount",
 								"value": {
-									"value": "@int(activity('Get_RemainingCount_Pending_0').output.firstRow.remainingCount)",
+									"value": "@int(activity('Get_RemainingCount_Pending_0_Fail').output.firstRow.remainingCount)",
 									"type": "Expression"
 								}
 							}
@@ -633,12 +633,6 @@
 							"dependsOn": [
 								{
 									"activity": "Success_FinalizeAccountStagingForClaim_1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "Fail_FinalizeAccountStagingForClaim_1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -964,6 +958,64 @@
 									"type": "DatasetReference"
 								}
 							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_1_Fail",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_1_Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_1_Fail",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_1_Fail').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
 						}
 					],
 					"timeout": "0.01:00:00"
@@ -1048,12 +1100,6 @@
 							"dependsOn": [
 								{
 									"activity": "Success_FinalizeAccountStagingForClaim_2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "Fail_FinalizeAccountStagingForClaim_2",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1376,6 +1422,63 @@
 								"dataset": {
 									"referenceName": "DS_LegacyContact_SQL",
 									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_2_Fail",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_2_Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_2_Fail",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_2_Fail').output.firstRow.remainingCount)",
+									"type": "Expression"
 								}
 							}
 						}
