@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), 100000))",
+						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
 						"type": "Expression"
 					},
 					"activities": [
@@ -581,7 +581,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), 100000))",
+						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
 						"type": "Expression"
 					},
 					"activities": [
@@ -1048,7 +1048,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), 100000))",
+						"value": "@equals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
 						"type": "Expression"
 					},
 					"activities": [
