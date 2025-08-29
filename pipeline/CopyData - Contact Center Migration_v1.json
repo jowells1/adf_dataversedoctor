@@ -913,7 +913,13 @@
 							"outputs": [
 								{
 									"referenceName": "DS_DV_Account_App2",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": {
+											"value": "@pipeline().parameters.entitySetName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						},
@@ -1391,7 +1397,13 @@
 							"outputs": [
 								{
 									"referenceName": "DS_DV_Account_App3",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": {
+											"value": "@pipeline().parameters.entitySetName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						},
