@@ -229,7 +229,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -726,7 +726,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
