@@ -1396,11 +1396,11 @@
 			},
 			"batchSize": {
 				"type": "Int",
-				"defaultValue": 50000
+				"defaultValue": 10000
 			},
 			"perRequest": {
 				"type": "Int",
-				"defaultValue": 50000
+				"defaultValue": 10000
 			},
 			"dvOperation": {
 				"type": "string",
