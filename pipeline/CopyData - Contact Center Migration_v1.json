@@ -244,7 +244,10 @@
 									},
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
-									"maxConcurrentConnections": 50,
+									"maxConcurrentConnections": {
+										"value": "@pipeline().parameters.maxCopyCurrentConnections",
+										"type": "Expression"
+									},
 									"bypassBusinessLogicExecution": "CustomSync,CustomAsync",
 									"bypassPowerAutomateFlows": true
 								},
@@ -1525,15 +1528,16 @@
 				"defaultValue": "true"
 			},
 			"maxDIU": {
-				"type": "string",
-				"defaultValue": "32"
+				"type": "int",
+				"defaultValue": 32
 			},
 			"copyParallelism": {
-				"type": "string",
-				"defaultValue": "40"
+				"type": "int",
+				"defaultValue": 40
 			},
-			"maxCopy": {
-				"type": "string"
+			"maxCopyCurrentConnections": {
+				"type": "int",
+				"defaultValue": 50
 			}
 		},
 		"variables": {
