@@ -2,7 +2,9 @@
 	"name": "EnterpriseDataMigrationwAzureDataFactory",
 	"properties": {
 		"globalConfigurations": {
-			"PipelineBillingEnabled": "true"
+			"PipelineBillingEnabled": "true",
+			"factoryStagingLSReferenceName": "DataverseDoctor_jowells_ADF_CopyDataLog",
+			"factoryStagingLSType": "LinkedServiceReference"
 		}
 	},
 	"location": "eastus",
