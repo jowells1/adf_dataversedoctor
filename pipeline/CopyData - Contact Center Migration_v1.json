@@ -135,7 +135,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimAccountStagingBatch @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimAccountStagingBatch BatchSize = ', string(pipeline().parameters.processBatch), ', ClaimRunId = ''', variables('claimRunId_0'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1587,8 +1587,9 @@
 				"type": "int",
 				"defaultValue": 50
 			},
-			"p": {
-				"type": "string"
+			"processBatch": {
+				"type": "int",
+				"defaultValue": 10000
 			}
 		},
 		"variables": {
