@@ -467,7 +467,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
