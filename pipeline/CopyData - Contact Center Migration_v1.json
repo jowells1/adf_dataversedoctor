@@ -135,7 +135,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimAccountStagingBatch @BatchSize = ', string(pipeline().parameters.processBatch), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.processBatch), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -636,7 +636,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimAccountStagingBatch @BatchSize = ', string(pipeline().parameters.processBatch), ', @ClaimRunId = ''', variables('claimRunId_1'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.processBatch), ', @ClaimRunId = ''', variables('claimRunId_1'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1129,7 +1129,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimAccountStagingBatch @BatchSize = ', string(pipeline().parameters.processBatch), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.processBatch), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1606,7 +1606,7 @@
 			},
 			"sourcePrimaryKeyColumn": {
 				"type": "string",
-				"defaultValue": "A"
+				"defaultValue": "AccountId"
 			},
 			"sourceStagingTableName": {
 				"type": "string",
