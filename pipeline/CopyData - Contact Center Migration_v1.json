@@ -959,7 +959,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Failed'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -995,7 +995,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1451,7 +1451,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1487,7 +1487,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.usp_FinalizeAccountStagingForClaim @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
