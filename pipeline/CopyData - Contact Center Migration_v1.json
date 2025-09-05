@@ -283,10 +283,7 @@
 										}
 									}
 								},
-								"dataIntegrationUnits": {
-									"value": "@pipeline().parameters.maxDIU",
-									"type": "Expression"
-								},
+								"dataIntegrationUnits": 32,
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
