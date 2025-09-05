@@ -1604,8 +1604,13 @@
 				"type": "int",
 				"defaultValue": 10000
 			},
-			"sourcePri": {
-				"type": "string"
+			"sourcePrimaryKeyColumn": {
+				"type": "string",
+				"defaultValue": "A"
+			},
+			"sourceStagingTableName": {
+				"type": "string",
+				"defaultValue": "AccountStaging"
 			}
 		},
 		"variables": {
