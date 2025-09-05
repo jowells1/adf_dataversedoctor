@@ -1580,14 +1580,6 @@
 				"type": "Int",
 				"defaultValue": 25
 			},
-			"dvOperation": {
-				"type": "string",
-				"defaultValue": "Microsoft.Dynamics.CRM.CreateMultiple"
-			},
-			"numberOfChildPipe": {
-				"type": "int",
-				"defaultValue": 1
-			},
 			"MSCRM_BypassBusinessLogicExecution": {
 				"type": "string",
 				"defaultValue": "CustomSync, CustomAsync"
@@ -1611,6 +1603,9 @@
 			"processBatch": {
 				"type": "int",
 				"defaultValue": 10000
+			},
+			"sourcePri": {
+				"type": "string"
 			}
 		},
 		"variables": {
