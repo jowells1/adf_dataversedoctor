@@ -1562,7 +1562,7 @@
 				}
 			},
 			{
-				"name": "Until_AllClaimedAndProcessed_2_copy1",
+				"name": "Until_AllClaimedAndProcessed_3",
 				"description": "",
 				"type": "Until",
 				"dependsOn": [
@@ -1581,7 +1581,7 @@
 					},
 					"activities": [
 						{
-							"name": "Set_ClaimRunId_2_copy1",
+							"name": "Set_ClaimRunId_3",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -1598,11 +1598,11 @@
 							}
 						},
 						{
-							"name": "sp_ClaimAccountStagingBatch_2_copy1",
+							"name": "sp_ClaimAccountStagingBatch_3",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Set_ClaimRunId_2_copy1",
+									"activity": "Set_ClaimRunId_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1635,11 +1635,11 @@
 							}
 						},
 						{
-							"name": "Get_RemainingCount_Pending_2_copy1",
+							"name": "Get_RemainingCount_Pending_3",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Success_FinalizeAccountStagingForClaim_2_copy1",
+									"activity": "Success_FinalizeAccountStagingForClaim_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1672,7 +1672,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Get_RemainingCount_Pending_2_copy1",
+									"activity": "Get_RemainingCount_Pending_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1692,11 +1692,11 @@
 							}
 						},
 						{
-							"name": "CopyData_SQL_to_Dataverse_2_copy1",
+							"name": "CopyData_SQL_to_Dataverse_3",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "sp_ClaimAccountStagingBatch_2_copy1",
+									"activity": "sp_ClaimAccountStagingBatch_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1920,11 +1920,11 @@
 							]
 						},
 						{
-							"name": "Fail_FinalizeAccountStagingForClaim_2_copy1",
+							"name": "Fail_FinalizeAccountStagingForClaim_3",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "CopyData_SQL_to_Dataverse_2_copy1",
+									"activity": "CopyData_SQL_to_Dataverse_3",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -1956,11 +1956,11 @@
 							}
 						},
 						{
-							"name": "Success_FinalizeAccountStagingForClaim_2_copy1",
+							"name": "Success_FinalizeAccountStagingForClaim_3",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "CopyData_SQL_to_Dataverse_2_copy1",
+									"activity": "CopyData_SQL_to_Dataverse_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1992,11 +1992,11 @@
 							}
 						},
 						{
-							"name": "Get_RemainingCount_Pending_2_Fail_copy1",
+							"name": "Get_RemainingCount_Pending_3_Fail",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Fail_FinalizeAccountStagingForClaim_2_copy1",
+									"activity": "Fail_FinalizeAccountStagingForClaim_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -2029,7 +2029,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Get_RemainingCount_Pending_2_Fail_copy1",
+									"activity": "Get_RemainingCount_Pending_3_Fail",
 									"dependencyConditions": [
 										"Succeeded"
 									]
