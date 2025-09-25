@@ -1733,10 +1733,6 @@
 									},
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
-									"alternateKeyName": {
-										"value": "@pipeline().parameters.entitySetName",
-										"type": "Expression"
-									},
 									"maxConcurrentConnections": {
 										"value": "@pipeline().parameters.maxCopyCurrentConnections",
 										"type": "Expression"
@@ -1913,7 +1909,10 @@
 							"outputs": [
 								{
 									"referenceName": "DS_DV_Account_App4",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": "@pipeline().parameters.entitySetName"
+									}
 								}
 							]
 						},
