@@ -1733,6 +1733,10 @@
 									},
 									"writeBehavior": "upsert",
 									"ignoreNullValues": false,
+									"alternateKeyName": {
+										"value": "@pipeline().parameters.entitySetName",
+										"type": "Expression"
+									},
 									"maxConcurrentConnections": {
 										"value": "@pipeline().parameters.maxCopyCurrentConnections",
 										"type": "Expression"
@@ -2037,7 +2041,7 @@
 							"typeProperties": {
 								"variableName": "remainingCount",
 								"value": {
-									"value": "@int(activity('Get_RemainingCount_Pending_2_Fail').output.firstRow.remainingCount)",
+									"value": "@int(activity('Get_RemainingCount_Pending_3_Fail').output.firstRow.remainingCount)",
 									"type": "Expression"
 								}
 							}
