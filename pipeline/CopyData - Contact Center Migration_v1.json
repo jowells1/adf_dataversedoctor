@@ -1686,7 +1686,7 @@
 							"typeProperties": {
 								"variableName": "remainingCount",
 								"value": {
-									"value": "@int(activity('Get_RemainingCount_Pending_2').output.firstRow.remainingCount)",
+									"value": "@int(activity('Get_RemainingCount_Pending_3').output.firstRow.remainingCount)",
 									"type": "Expression"
 								}
 							}
