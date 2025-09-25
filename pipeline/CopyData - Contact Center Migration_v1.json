@@ -1668,7 +1668,7 @@
 							}
 						},
 						{
-							"name": "Set_RemainingCount_2_copy1",
+							"name": "Set_RemainingCount_3",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -1908,14 +1908,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App3",
-									"type": "DatasetReference",
-									"parameters": {
-										"EntityLogicalName": {
-											"value": "@pipeline().parameters.entitySetName",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "DS_DV_Account_App4",
+									"type": "DatasetReference"
 								}
 							]
 						},
@@ -2025,7 +2019,7 @@
 							}
 						},
 						{
-							"name": "Set_RemainingCount_2_Fail_copy1",
+							"name": "Set_RemainingCount_3_Fail",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
