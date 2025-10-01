@@ -1,0 +1,20 @@
+{
+	"name": "CommunitySummit_jowells_AppUser_3",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "CommonDataServiceForApps",
+		"typeProperties": {
+			"deploymentType": "Online",
+			"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+			"authenticationType": "AADServicePrincipal",
+			"servicePrincipalId": "51221a90-723d-4647-9dd1-b606b98b7d7a",
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDJCNzY3MTE3LTZCNzItNEY5OS04MUY4LTZDOTZCMzMyRTRFQV85MzA1ODEwOS1kNGEwLTQ1ZTItYTEyMy03ZTNlM2U5OTczYmYiDQp9"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime-LG",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

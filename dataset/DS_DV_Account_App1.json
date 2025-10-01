@@ -1,0 +1,24 @@
+{
+	"name": "DS_DV_Account_App1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CommunitySummit_jowells_AppUser_1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"EntityLogicalName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "CommonDataServiceForAppsEntity",
+		"schema": [],
+		"typeProperties": {
+			"entityName": {
+				"value": "@dataset().EntityLogicalName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

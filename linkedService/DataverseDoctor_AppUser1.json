@@ -1,0 +1,22 @@
+{
+	"name": "DataverseDoctor_AppUser1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://dataversedoctor.crm.dynamics.com/api/data/v9.2",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "ManagedServiceIdentity",
+			"aadResourceId": "https://dataversedoctor.crm.dynamics.com",
+			"credential": {
+				"referenceName": "DataverseDoctor_jowells_Identity1",
+				"type": "CredentialReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime-LG",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"name": "EnterpriseDataMigrationwAzureDataFactory",
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "true",
+			"factoryStagingLSReferenceName": "DataverseDoctor_jowells_ADF_CopyDataLog",
+			"factoryStagingLSType": "LinkedServiceReference"
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned,UserAssigned",
+		"principalId": "e89531c5-ea8b-49ce-bfe1-102c5b9f0285",
+		"tenantId": "979fd422-22c4-4a36-bea6-1cf87b6502dd",
+		"userAssignedIdentities": {
+			"/subscriptions/79def5f1-f626-479f-8db5-b1272680adc1/resourcegroups/CommunitySummit2025/providers/Microsoft.ManagedIdentity/userAssignedIdentities/DataverseDoctor_jowells_Identity2": {
+				"clientId": "45adef23-f48a-4c09-b659-08ec414b672d",
+				"principalId": "7d781fca-d7d9-4ff5-b482-996a96a9cf92"
+			},
+			"/subscriptions/79def5f1-f626-479f-8db5-b1272680adc1/resourcegroups/CommunitySummit2025/providers/Microsoft.ManagedIdentity/userAssignedIdentities/DataverseDoctor_jowells_Identity3": {
+				"clientId": "081312f1-94db-4e35-9a74-be471424b832",
+				"principalId": "9a22481d-7978-48ca-b9c5-0fe4bc5e313e"
+			},
+			"/subscriptions/79def5f1-f626-479f-8db5-b1272680adc1/resourcegroups/CommunitySummit2025/providers/Microsoft.ManagedIdentity/userAssignedIdentities/DataverseDoctor_jowells_Identity1": {
+				"clientId": "fdb99992-7ac7-40d3-b8b5-cc9b3056cc69",
+				"principalId": "bc1f0aea-45b1-4c94-9171-486ff53f83ab"
+			}
+		}
+	}
+}

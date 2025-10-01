@@ -1,0 +1,2139 @@
+{
+	"name": "CopyData - Contact Center Migration_v1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_TotalCount_Pending",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT COUNT(*) AS totalCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_LegacyContact_SQL",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Set_totalCount",
+				"description": "",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_TotalCount_Pending",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "totalCount",
+					"value": {
+						"value": "@int(activity('Lookup_TotalCount_Pending').output.firstRow.totalCount)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set_RemainingCount_int",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set_totalCount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "remainingCount",
+					"value": {
+						"value": "@variables('totalCount')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Until_AllClaimedAndProcessed_0",
+				"description": "",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set_RemainingCount_int",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set_ClaimRunId_0",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "claimRunId_0",
+								"value": {
+									"value": "@guid()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "sp_ClaimAccountStagingBatch_0",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Set_ClaimRunId_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_0",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_0_Success",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_0').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "CopyData_SQL_to_Dataverse_0",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "sp_ClaimAccountStagingBatch_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None",
+									"connectVia": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"sink": {
+									"type": "CommonDataServiceForAppsSink",
+									"writeBatchSize": {
+										"value": "@pipeline().parameters.batchSize",
+										"type": "Expression"
+									},
+									"writeBehavior": "upsert",
+									"ignoreNullValues": false,
+									"maxConcurrentConnections": {
+										"value": "@pipeline().parameters.maxCopyCurrentConnections",
+										"type": "Expression"
+									},
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"enableStaging": false,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
+								"logSettings": {
+									"enableCopyActivityLog": true,
+									"copyActivityLogSettings": {
+										"logLevel": "Info",
+										"enableReliableLogging": false
+									},
+									"logLocationSettings": {
+										"linkedServiceName": {
+											"referenceName": "DataverseDoctor_jowells_ADF_CopyDataLog",
+											"type": "LinkedServiceReference"
+										}
+									}
+								},
+								"dataIntegrationUnits": 32,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "AccountId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "accountid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "AccountNumber",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "accountnumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_City",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_city",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_PostCode",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_postalcode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_State",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_stateorprovince",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "EmailAddress1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "emailaddress1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Name",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "new_SourceId"
+											},
+											"sink": {
+												"name": "new_sourceid",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CreatedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "overriddencreatedon",
+												"type": "DateTime"
+											}
+										},
+										{
+											"source": {
+												"name": "OwnerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "owninguser",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "ownerid@EntityReference",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "owneridtype",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Telephone1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "telephone1",
+												"type": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_DV_Account_App1",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": {
+											"value": "@pipeline().parameters.entitySetName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Success_FinalizeAccountStagingForClaim_0",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Success'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Fail_FinalizeAccountStagingForClaim_0",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_0",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Failed'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_0_Fail",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_0_Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_0_Fail",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_0_Fail').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.01:00:00"
+				}
+			},
+			{
+				"name": "Until_AllClaimedAndProcessed_1",
+				"description": "",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set_RemainingCount_int",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set_ClaimRunId_1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "claimRunId_1",
+								"value": {
+									"value": "@guid()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "sp_ClaimAccountStagingBatch_1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Set_ClaimRunId_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_1'), ''';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_1').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "CopyData_SQL_to_Dataverse_1",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "sp_ClaimAccountStagingBatch_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None",
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"sink": {
+									"type": "CommonDataServiceForAppsSink",
+									"writeBatchSize": {
+										"value": "@pipeline().parameters.batchSize",
+										"type": "Expression"
+									},
+									"writeBehavior": "upsert",
+									"ignoreNullValues": false,
+									"maxConcurrentConnections": {
+										"value": "@pipeline().parameters.maxCopyCurrentConnections",
+										"type": "Expression"
+									},
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"enableStaging": false,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
+								"dataIntegrationUnits": {
+									"value": "@pipeline().parameters.maxDIU",
+									"type": "Expression"
+								},
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "AccountId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "accountid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "AccountNumber",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "accountnumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_City",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_city",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_PostCode",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_postalcode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_State",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_stateorprovince",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "EmailAddress1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "emailaddress1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Name",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "new_SourceId"
+											},
+											"sink": {
+												"name": "new_sourceid",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CreatedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "overriddencreatedon",
+												"type": "DateTime"
+											}
+										},
+										{
+											"source": {
+												"name": "OwnerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "owninguser",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "ownerid@EntityReference",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "owneridtype",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Telephone1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "telephone1",
+												"type": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_DV_Account_App2",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": {
+											"value": "@pipeline().parameters.entitySetName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Fail_FinalizeAccountStagingForClaim_1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Failed'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Success_FinalizeAccountStagingForClaim_1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Success'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_1_Fail",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_1_Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_1_Fail",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_1_Fail').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.01:00:00"
+				}
+			},
+			{
+				"name": "Until_AllClaimedAndProcessed_2",
+				"description": "",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set_RemainingCount_int",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set_ClaimRunId_2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "claimRunId_2",
+								"value": {
+									"value": "@guid()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "sp_ClaimAccountStagingBatch_2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Set_ClaimRunId_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_2",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_2').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "CopyData_SQL_to_Dataverse_2",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "sp_ClaimAccountStagingBatch_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_2'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.batchSize),\n    ';'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None",
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"sink": {
+									"type": "CommonDataServiceForAppsSink",
+									"writeBatchSize": {
+										"value": "@pipeline().parameters.batchSize",
+										"type": "Expression"
+									},
+									"writeBehavior": "upsert",
+									"ignoreNullValues": false,
+									"maxConcurrentConnections": {
+										"value": "@pipeline().parameters.maxCopyCurrentConnections",
+										"type": "Expression"
+									},
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"enableStaging": false,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
+								"dataIntegrationUnits": {
+									"value": "@pipeline().parameters.maxDIU",
+									"type": "Expression"
+								},
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "AccountId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "accountid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "AccountNumber",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "accountnumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_City",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_city",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_PostCode",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_postalcode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_State",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_stateorprovince",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "EmailAddress1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "emailaddress1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Name",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "new_SourceId"
+											},
+											"sink": {
+												"name": "new_sourceid",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CreatedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "overriddencreatedon",
+												"type": "DateTime"
+											}
+										},
+										{
+											"source": {
+												"name": "OwnerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "owninguser",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "ownerid@EntityReference",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "owneridtype",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Telephone1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "telephone1",
+												"type": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_DV_Account_App3",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": {
+											"value": "@pipeline().parameters.entitySetName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Fail_FinalizeAccountStagingForClaim_2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_2",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Success_FinalizeAccountStagingForClaim_2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_2_Fail",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_2_Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_2_Fail",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_2_Fail').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.01:00:00"
+				}
+			},
+			{
+				"name": "Until_AllClaimedAndProcessed_3",
+				"description": "",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set_RemainingCount_int",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set_ClaimRunId_3",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "claimRunId_2",
+								"value": {
+									"value": "@guid()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "sp_ClaimAccountStagingBatch_3",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Set_ClaimRunId_3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_3",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim_3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_3",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_3').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "CopyData_SQL_to_Dataverse_3",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "sp_ClaimAccountStagingBatch_3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_2'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.batchSize),\n    ';'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None",
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"sink": {
+									"type": "CommonDataServiceForAppsSink",
+									"writeBatchSize": {
+										"value": "@pipeline().parameters.batchSize",
+										"type": "Expression"
+									},
+									"writeBehavior": "upsert",
+									"ignoreNullValues": false,
+									"maxConcurrentConnections": {
+										"value": "@pipeline().parameters.maxCopyCurrentConnections",
+										"type": "Expression"
+									},
+									"bypassBusinessLogicExecution": {
+										"value": "@pipeline().parameters.MSCRM_BypassBusinessLogicExecution",
+										"type": "Expression"
+									},
+									"bypassPowerAutomateFlows": {
+										"value": "@pipeline().parameters.MSCRM_SuppressCallbackRegistrationExpanderJob",
+										"type": "Expression"
+									},
+									"integrationRuntimeName": {
+										"referenceName": "integrationRuntime-LG",
+										"type": "IntegrationRuntimeReference"
+									}
+								},
+								"enableStaging": false,
+								"parallelCopies": {
+									"value": "@pipeline().parameters.copyParallelism",
+									"type": "Expression"
+								},
+								"dataIntegrationUnits": {
+									"value": "@pipeline().parameters.maxDIU",
+									"type": "Expression"
+								},
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "AccountId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "accountid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "AccountNumber",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "accountnumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_City",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_city",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_PostCode",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_postalcode",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Address1_State",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "address1_stateorprovince",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "EmailAddress1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "emailaddress1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Name",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "new_SourceId"
+											},
+											"sink": {
+												"name": "new_sourceid",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CreatedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
+											},
+											"sink": {
+												"name": "overriddencreatedon",
+												"type": "DateTime"
+											}
+										},
+										{
+											"source": {
+												"name": "OwnerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "owninguser",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "ownerid@EntityReference",
+												"type": "String",
+												"physicalType": "varchar"
+											},
+											"sink": {
+												"name": "owneridtype",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Telephone1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "telephone1",
+												"type": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_DV_Account_App4",
+									"type": "DatasetReference",
+									"parameters": {
+										"EntityLogicalName": "@pipeline().parameters.entitySetName"
+									}
+								}
+							]
+						},
+						{
+							"name": "Fail_FinalizeAccountStagingForClaim_3",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_3",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Success_FinalizeAccountStagingForClaim_3",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "CopyData_SQL_to_Dataverse_3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"isolationLevel": "ReadCommitted",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Get_RemainingCount_Pending_3_Fail",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_LegacyContact_SQL",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Set_RemainingCount_3_Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get_RemainingCount_Pending_3_Fail",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "remainingCount",
+								"value": {
+									"value": "@int(activity('Get_RemainingCount_Pending_3_Fail').output.firstRow.remainingCount)",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.01:00:00"
+				}
+			}
+		],
+		"concurrency": 10,
+		"parameters": {
+			"dataverseBaseUrl": {
+				"type": "String",
+				"defaultValue": "https://dataversedoctor.crm.dynamics.com"
+			},
+			"entitySetName": {
+				"type": "String",
+				"defaultValue": "account"
+			},
+			"recordsToProcess": {
+				"type": "Int",
+				"defaultValue": 100000
+			},
+			"batchSize": {
+				"type": "Int",
+				"defaultValue": 5
+			},
+			"MSCRM_BypassBusinessLogicExecution": {
+				"type": "string",
+				"defaultValue": "CustomSync, CustomAsync"
+			},
+			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"maxDIU": {
+				"type": "int",
+				"defaultValue": 32
+			},
+			"copyParallelism": {
+				"type": "int",
+				"defaultValue": 50
+			},
+			"maxCopyCurrentConnections": {
+				"type": "int",
+				"defaultValue": 50
+			},
+			"processBatch": {
+				"type": "int",
+				"defaultValue": 10000
+			},
+			"sourcePrimaryKeyColumn": {
+				"type": "string",
+				"defaultValue": "AccountId"
+			},
+			"sourceStagingTableName": {
+				"type": "string",
+				"defaultValue": "AccountStaging"
+			}
+		},
+		"variables": {
+			"claimRunId_0": {
+				"type": "String"
+			},
+			"targets": {
+				"type": "Array"
+			},
+			"totalCount": {
+				"type": "Integer"
+			},
+			"remainingCount": {
+				"type": "Integer"
+			},
+			"MSCRM_BypassBusinessLogicExecution": {
+				"type": "String"
+			},
+			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
+				"type": "String"
+			},
+			"lastClaimedCount": {
+				"type": "Integer"
+			},
+			"claimRunId_1": {
+				"type": "String"
+			},
+			"claimRunId_2": {
+				"type": "String"
+			}
+		},
+		"annotations": [
+			"Claims 500 pending rows, builds Targets JSON, posts to Dataverse CreateMultiple in 100-row chunks, finalizes status."
+		],
+		"lastPublishTime": "2025-08-22T20:18:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
