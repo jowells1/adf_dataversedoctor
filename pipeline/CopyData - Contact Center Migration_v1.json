@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"value": "@lessOrEquals(variables('remainingCount'), 0)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -543,7 +543,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"value": "@lessOrEquals(variables('remainingCount'), 0)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -986,7 +986,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"value": "@lessOrEquals(variables('remainingCount'), 0)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -1428,7 +1428,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@lessOrEquals(variables('remainingCount'), sub(variables('totalCount'), pipeline().parameters.recordsToProcess))",
+						"value": "@lessOrEquals(variables('remainingCount'), 0)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -1865,7 +1865,7 @@
 			},
 			"recordsToProcess": {
 				"type": "Int",
-				"defaultValue": 10000
+				"defaultValue": 100000
 			},
 			"batchSize": {
 				"type": "Int",
