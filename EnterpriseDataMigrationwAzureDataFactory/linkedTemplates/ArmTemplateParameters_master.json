@@ -58,6 +58,12 @@
 		},
 		"LegacyContactCenterSQL_properties_typeProperties_tenant": {
 			"value": "979fd422-22c4-4a36-bea6-1cf87b6502dd"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
 		}
 	}
 }

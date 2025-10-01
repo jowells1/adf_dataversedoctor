@@ -1,0 +1,633 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "enterprisedatamigrationwazuredatafactory"
+		},
+		"CommunitySummit_jowells_AppUser_1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_1'"
+		},
+		"CommunitySummit_jowells_AppUser_2_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_2'"
+		},
+		"CommunitySummit_jowells_AppUser_3_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_3'"
+		},
+		"CommunitySummit_jowells_AppUser_4_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_4'"
+		},
+		"CommunitySummit_jowells_AppUser_5_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_5'"
+		},
+		"DataverseDoctor_jowells_ADF_CopyDataLog_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'DataverseDoctor_jowells_ADF_CopyDataLog'"
+		},
+		"LegacyContactCenterSQL_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'LegacyContactCenterSQL'"
+		},
+		"CommunitySummit_jowells_AppUser_1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "5d409776-54ee-478f-9af1-c2a8e0294e6d"
+		},
+		"CommunitySummit_jowells_AppUser_2_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "077be3d5-e98f-4748-a1cb-eed9ddad438e"
+		},
+		"CommunitySummit_jowells_AppUser_3_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "51221a90-723d-4647-9dd1-b606b98b7d7a"
+		},
+		"CommunitySummit_jowells_AppUser_4_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "6b2a0e69-b344-4cfc-b4bf-9fd9c2496675"
+		},
+		"CommunitySummit_jowells_AppUser_5_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "d5297845-a10a-470b-9ddc-847a19084029"
+		},
+		"DataverseDoctor_AppUser1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataversedoctor.crm.dynamics.com/api/data/v9.2"
+		},
+		"DataverseDoctor_AppUser1_properties_typeProperties_aadResourceId": {
+			"type": "string",
+			"defaultValue": "https://dataversedoctor.crm.dynamics.com"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "legacycontactcenter.database.windows.net"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "contactcenterdb"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "bd9a866f-d38c-4234-b04c-f62003451430"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "979fd422-22c4-4a36-bea6-1cf87b6502dd"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime-LG')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 80,
+							"timeToLive": 0,
+							"cleanup": false,
+							"customProperties": []
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataverseDoctor_jowells_Identity1')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/79def5f1-f626-479f-8db5-b1272680adc1/resourcegroups/CommunitySummit2025/providers/Microsoft.ManagedIdentity/userAssignedIdentities/DataverseDoctor_jowells_Identity1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataverseDoctor_jowells_Identity2')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/79def5f1-f626-479f-8db5-b1272680adc1/resourceGroups/CommunitySummit2025/providers/Microsoft.ManagedIdentity/userAssignedIdentities/DataverseDoctor_jowells_Identity2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataverseDoctor_jowells_Identity3')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/79def5f1-f626-479f-8db5-b1272680adc1/resourceGroups/CommunitySummit2025/providers/Microsoft.ManagedIdentity/userAssignedIdentities/DataverseDoctor_jowells_Identity3"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommunitySummit_jowells_AppUser_1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('CommunitySummit_jowells_AppUser_1_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('CommunitySummit_jowells_AppUser_1_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommunitySummit_jowells_AppUser_2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('CommunitySummit_jowells_AppUser_2_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('CommunitySummit_jowells_AppUser_2_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommunitySummit_jowells_AppUser_3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('CommunitySummit_jowells_AppUser_3_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('CommunitySummit_jowells_AppUser_3_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommunitySummit_jowells_AppUser_4')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('CommunitySummit_jowells_AppUser_4_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('CommunitySummit_jowells_AppUser_4_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommunitySummit_jowells_AppUser_5')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('CommunitySummit_jowells_AppUser_5_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('CommunitySummit_jowells_AppUser_5_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataverseDoctor_AppUser1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('DataverseDoctor_AppUser1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "ManagedServiceIdentity",
+					"aadResourceId": "[parameters('DataverseDoctor_AppUser1_properties_typeProperties_aadResourceId')]",
+					"credential": {
+						"referenceName": "DataverseDoctor_jowells_Identity1",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]",
+				"[concat(variables('factoryId'), '/credentials/DataverseDoctor_jowells_Identity1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataverseDoctor_jowells_ADF_CopyDataLog')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('DataverseDoctor_jowells_ADF_CopyDataLog_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LegacyContactCenterSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('LegacyContactCenterSQL_properties_typeProperties_server')]",
+					"database": "[parameters('LegacyContactCenterSQL_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "ServicePrincipal",
+					"servicePrincipalId": "[parameters('LegacyContactCenterSQL_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('LegacyContactCenterSQL_servicePrincipalCredential')]"
+					},
+					"tenant": "[parameters('LegacyContactCenterSQL_properties_typeProperties_tenant')]"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime-LG",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime-LG')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DV_Account_App1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CommunitySummit_jowells_AppUser_1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"EntityLogicalName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().EntityLogicalName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CommunitySummit_jowells_AppUser_1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DV_Account_App2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CommunitySummit_jowells_AppUser_2",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"EntityLogicalName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().EntityLogicalName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CommunitySummit_jowells_AppUser_2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DV_Account_App3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CommunitySummit_jowells_AppUser_3",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"EntityLogicalName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().EntityLogicalName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CommunitySummit_jowells_AppUser_3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DV_Account_App4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CommunitySummit_jowells_AppUser_4",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"EntityLogicalName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().EntityLogicalName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CommunitySummit_jowells_AppUser_4')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DV_Account_App5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CommunitySummit_jowells_AppUser_5",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"EntityLogicalName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": {
+						"value": "@dataset().EntityLogicalName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CommunitySummit_jowells_AppUser_5')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_LegacyContact_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LegacyContactCenterSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LegacyContactCenterSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_Account')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LegacyContactCenterSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AccountId",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AccountNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PrimaryContactId",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "Telephone1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EmailAddress1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Address1_City",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Address1_State",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Address1_PostCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedOn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ModifiedOn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "OwnerId",
+						"type": "uniqueidentifier"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Account"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LegacyContactCenterSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_AccountStaging')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LegacyContactCenterSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AccountId",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "PartitionId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SequenceNumber",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LastProcessedOn",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "AccountStaging"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LegacyContactCenterSQL')]"
+			]
+		}
+	]
+}

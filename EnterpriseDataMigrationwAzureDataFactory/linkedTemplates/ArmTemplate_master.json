@@ -1,0 +1,188 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "enterprisedatamigrationwazuredatafactory"
+		},
+		"CommunitySummit_jowells_AppUser_1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_1'"
+		},
+		"CommunitySummit_jowells_AppUser_2_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_2'"
+		},
+		"CommunitySummit_jowells_AppUser_3_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_3'"
+		},
+		"CommunitySummit_jowells_AppUser_4_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_4'"
+		},
+		"CommunitySummit_jowells_AppUser_5_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommunitySummit_jowells_AppUser_5'"
+		},
+		"DataverseDoctor_jowells_ADF_CopyDataLog_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'DataverseDoctor_jowells_ADF_CopyDataLog'"
+		},
+		"LegacyContactCenterSQL_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'LegacyContactCenterSQL'"
+		},
+		"CommunitySummit_jowells_AppUser_1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "5d409776-54ee-478f-9af1-c2a8e0294e6d"
+		},
+		"CommunitySummit_jowells_AppUser_2_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "077be3d5-e98f-4748-a1cb-eed9ddad438e"
+		},
+		"CommunitySummit_jowells_AppUser_3_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "51221a90-723d-4647-9dd1-b606b98b7d7a"
+		},
+		"CommunitySummit_jowells_AppUser_4_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "6b2a0e69-b344-4cfc-b4bf-9fd9c2496675"
+		},
+		"CommunitySummit_jowells_AppUser_5_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "d5297845-a10a-470b-9ddc-847a19084029"
+		},
+		"DataverseDoctor_AppUser1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataversedoctor.crm.dynamics.com/api/data/v9.2"
+		},
+		"DataverseDoctor_AppUser1_properties_typeProperties_aadResourceId": {
+			"type": "string",
+			"defaultValue": "https://dataversedoctor.crm.dynamics.com"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "legacycontactcenter.database.windows.net"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "contactcenterdb"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "bd9a866f-d38c-4234-b04c-f62003451430"
+		},
+		"LegacyContactCenterSQL_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "979fd422-22c4-4a36-bea6-1cf87b6502dd"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "EnterpriseDataMigrationwAzureDataFactory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"CommunitySummit_jowells_AppUser_1_servicePrincipalCredential": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_1_servicePrincipalCredential')]"
+					},
+					"CommunitySummit_jowells_AppUser_2_servicePrincipalCredential": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_2_servicePrincipalCredential')]"
+					},
+					"CommunitySummit_jowells_AppUser_3_servicePrincipalCredential": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_3_servicePrincipalCredential')]"
+					},
+					"CommunitySummit_jowells_AppUser_4_servicePrincipalCredential": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_4_servicePrincipalCredential')]"
+					},
+					"CommunitySummit_jowells_AppUser_5_servicePrincipalCredential": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_5_servicePrincipalCredential')]"
+					},
+					"DataverseDoctor_jowells_ADF_CopyDataLog_connectionString": {
+						"value": "[parameters('DataverseDoctor_jowells_ADF_CopyDataLog_connectionString')]"
+					},
+					"LegacyContactCenterSQL_servicePrincipalCredential": {
+						"value": "[parameters('LegacyContactCenterSQL_servicePrincipalCredential')]"
+					},
+					"CommunitySummit_jowells_AppUser_1_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_1_properties_typeProperties_servicePrincipalId')]"
+					},
+					"CommunitySummit_jowells_AppUser_2_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_2_properties_typeProperties_servicePrincipalId')]"
+					},
+					"CommunitySummit_jowells_AppUser_3_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_3_properties_typeProperties_servicePrincipalId')]"
+					},
+					"CommunitySummit_jowells_AppUser_4_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_4_properties_typeProperties_servicePrincipalId')]"
+					},
+					"CommunitySummit_jowells_AppUser_5_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('CommunitySummit_jowells_AppUser_5_properties_typeProperties_servicePrincipalId')]"
+					},
+					"DataverseDoctor_AppUser1_properties_typeProperties_url": {
+						"value": "[parameters('DataverseDoctor_AppUser1_properties_typeProperties_url')]"
+					},
+					"DataverseDoctor_AppUser1_properties_typeProperties_aadResourceId": {
+						"value": "[parameters('DataverseDoctor_AppUser1_properties_typeProperties_aadResourceId')]"
+					},
+					"LegacyContactCenterSQL_properties_typeProperties_server": {
+						"value": "[parameters('LegacyContactCenterSQL_properties_typeProperties_server')]"
+					},
+					"LegacyContactCenterSQL_properties_typeProperties_database": {
+						"value": "[parameters('LegacyContactCenterSQL_properties_typeProperties_database')]"
+					},
+					"LegacyContactCenterSQL_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('LegacyContactCenterSQL_properties_typeProperties_servicePrincipalId')]"
+					},
+					"LegacyContactCenterSQL_properties_typeProperties_tenant": {
+						"value": "[parameters('LegacyContactCenterSQL_properties_typeProperties_tenant')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "EnterpriseDataMigrationwAzureDataFactory_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'EnterpriseDataMigrationwAzureDataFactory_ArmTemplate_0')]"
+			]
+		}
+	]
+}
