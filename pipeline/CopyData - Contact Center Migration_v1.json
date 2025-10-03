@@ -16,7 +16,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT COUNT(*) AS totalCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT COUNT(*) AS totalCount FROM dbo.',pipeline().parameters.entitySetName,'Staging WHERE Status = ''Pending'';')",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -113,7 +116,7 @@
 							}
 						},
 						{
-							"name": "sp_ClaimAccountStagingBatch_0",
+							"name": "sp_ClaimStagingBatch_0",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -219,7 +222,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "sp_ClaimAccountStagingBatch_0",
+									"activity": "sp_ClaimStagingBatch_0",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -237,7 +240,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic TableName = ''', pipeline().parameters.entitySetName, ''', ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -565,7 +568,7 @@
 							}
 						},
 						{
-							"name": "sp_ClaimAccountStagingBatch_1",
+							"name": "sp_ClaimStagingBatch_1",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -672,7 +675,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "sp_ClaimAccountStagingBatch_1",
+									"activity": "sp_ClaimStagingBatch_1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1008,7 +1011,7 @@
 							}
 						},
 						{
-							"name": "sp_ClaimAccountStagingBatch_2",
+							"name": "sp_ClaimStagingBatch_2",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -1114,7 +1117,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "sp_ClaimAccountStagingBatch_2",
+									"activity": "sp_ClaimStagingBatch_2",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1450,7 +1453,7 @@
 							}
 						},
 						{
-							"name": "sp_ClaimAccountStagingBatch_3",
+							"name": "sp_ClaimStagingBatch_3",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -1556,7 +1559,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "sp_ClaimAccountStagingBatch_3",
+									"activity": "sp_ClaimStagingBatch_3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
