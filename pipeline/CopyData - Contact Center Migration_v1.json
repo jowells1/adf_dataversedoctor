@@ -138,7 +138,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -478,7 +478,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -514,7 +514,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Failed'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_0'), ''', @NewStatus=''Failed'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -590,7 +590,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_1'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_1'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -693,7 +693,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic TableName = ''', pipeline().parameters.entitySetName, ''', ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -921,7 +921,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Failed'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Failed'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -957,7 +957,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_1'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1033,7 +1033,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1135,7 +1135,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_2'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.batchSize),\n    ';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic TableName = ''', pipeline().parameters.entitySetName, ''', ClaimRunId = ''',\n    variables('claimRunId_2'),\n    ''', TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1363,7 +1363,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1399,7 +1399,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1445,7 +1445,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "claimRunId_2",
+								"variableName": "claimRunId_3",
 								"value": {
 									"value": "@guid()",
 									"type": "Expression"
@@ -1475,7 +1475,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @TableName = ' ,string(pipeline().parameters.sourceStagingTableName), ', @PrimaryKeyColumn = ', string(pipeline().parameters.sourcePrimaryKeyColumn) ,', @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_2'), ''';')",
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_3'), ''';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1577,7 +1577,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetAccountTargetsForClaimNonJson @ClaimRunId = ''',\n    variables('claimRunId_2'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.batchSize),\n    ';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic TableName = ''', pipeline().parameters.entitySetName, ''', ClaimRunId = ''',\n    variables('claimRunId_3'),\n    ''', TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1802,7 +1802,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Failed'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_3'), ''', @NewStatus=''Failed'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1838,7 +1838,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @TableName = ', string(pipeline().parameters.sourceStagingTableName) , ', @ClaimRunId=''', variables('claimRunId_2'), ''', @NewStatus=''Success'';')",
+										"value": "@concat('EXEC dbo.sp_FinalizeStagingForClaim @BaseTableName = ', string(pipeline().parameters.entitySetName) , ', @ClaimRunId=''', variables('claimRunId_3'), ''', @NewStatus=''Success'';')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -1864,7 +1864,7 @@
 			},
 			"entitySetName": {
 				"type": "String",
-				"defaultValue": "account"
+				"defaultValue": "contact"
 			},
 			"recordsToProcess": {
 				"type": "Int",
@@ -1933,6 +1933,9 @@
 				"type": "String"
 			},
 			"claimRunId_2": {
+				"type": "String"
+			},
+			"claimRunId_3": {
 				"type": "String"
 			}
 		},
