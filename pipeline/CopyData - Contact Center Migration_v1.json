@@ -623,7 +623,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
@@ -681,6 +684,15 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"additionalColumns": [
+										{
+											"name": "parentcustomerid@EntityReference",
+											"value": {
+												"value": "string('account')",
+												"type": "Expression"
+											}
+										}
+									],
 									"sqlReaderQuery": {
 										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic @BaseTableName = ''', pipeline().parameters.entitySetName, ''', @ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 										"type": "Expression"
@@ -930,7 +942,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -1372,7 +1387,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
