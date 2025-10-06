@@ -137,49 +137,9 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderStoredProcedureName": "[dbo].[sp_ClaimStagingBatchDynamic]",
-									"storedProcedureParameters": {
-										"BaseTableName": {
-											"type": "String",
-											"value": {
-												"value": "@pipeline().parameters.entitySetName",
-												"type": "Expression"
-											}
-										},
-										"BatchSize": {
-											"type": "Int32",
-											"value": {
-												"value": "@pipeline().parameters.recordsToProcess",
-												"type": "Expression"
-											}
-										},
-										"ClaimRunId": {
-											"type": "Guid",
-											"value": {
-												"value": "@variables('claimRunId_0')",
-												"type": "Expression"
-											}
-										},
-										"OrderBy": {
-											"type": "String",
-											"value": null
-										},
-										"SchemaName": {
-											"type": "String",
-											"value": null
-										},
-										"StagingPKColumn": {
-											"type": "String",
-											"value": null
-										},
-										"StagingSchemaName": {
-											"type": "String",
-											"value": null
-										},
-										"ValidateAgainstBase": {
-											"type": "Boolean",
-											"value": null
-										}
+									"sqlReaderQuery": {
+										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
+										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
@@ -199,15 +159,13 @@
 								{
 									"activity": "Success_FinalizeAccountStagingForClaim_0",
 									"dependencyConditions": [
-										"Succeeded",
 										"Skipped"
 									]
 								},
 								{
 									"activity": "Fail_FinalizeAccountStagingForClaim_0",
 									"dependencyConditions": [
-										"Skipped",
-										"Succeeded"
+										"Skipped"
 									]
 								}
 							],
@@ -222,7 +180,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -662,7 +623,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"sqlReaderQuery": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
 									"partitionOption": "None"
@@ -969,7 +930,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"sqlReaderQuery": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -1411,7 +1372,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+									"sqlReaderQuery": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -1760,7 +1721,7 @@
 			},
 			"recordsToProcess": {
 				"type": "Int",
-				"defaultValue": 100000
+				"defaultValue": 10000
 			},
 			"batchSize": {
 				"type": "Int",
