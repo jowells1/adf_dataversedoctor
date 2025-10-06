@@ -226,9 +226,49 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderQuery": {
-												"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
-												"type": "Expression"
+											"sqlReaderStoredProcedureName": "[[dbo].[sp_ClaimStagingBatchDynamic]",
+											"storedProcedureParameters": {
+												"BaseTableName": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.entitySetName",
+														"type": "Expression"
+													}
+												},
+												"BatchSize": {
+													"type": "Int32",
+													"value": {
+														"value": "@pipeline().parameters.recordsToProcess",
+														"type": "Expression"
+													}
+												},
+												"ClaimRunId": {
+													"type": "Guid",
+													"value": {
+														"value": "@variables('claimRunId_0')",
+														"type": "Expression"
+													}
+												},
+												"OrderBy": {
+													"type": "String",
+													"value": null
+												},
+												"SchemaName": {
+													"type": "String",
+													"value": null
+												},
+												"StagingPKColumn": {
+													"type": "String",
+													"value": null
+												},
+												"StagingSchemaName": {
+													"type": "String",
+													"value": null
+												},
+												"ValidateAgainstBase": {
+													"type": "Boolean",
+													"value": null
+												}
 											},
 											"queryTimeout": "02:00:00",
 											"isolationLevel": "ReadCommitted",
@@ -330,6 +370,15 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
+											"additionalColumns": [
+												{
+													"name": "parentcustomerid@EntityReference",
+													"value": {
+														"value": "string('account')",
+														"type": "Expression"
+													}
+												}
+											],
 											"sqlReaderQuery": {
 												"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic @BaseTableName = ''', pipeline().parameters.entitySetName, ''', @ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 												"type": "Expression"
@@ -391,57 +440,13 @@
 											"mappings": [
 												{
 													"source": {
-														"name": "AccountId",
-														"type": "Guid",
-														"physicalType": "uniqueidentifier"
+														"name": "CreatedOn",
+														"type": "DateTime",
+														"physicalType": "datetime"
 													},
 													"sink": {
-														"name": "accountid",
-														"type": "Guid"
-													}
-												},
-												{
-													"source": {
-														"name": "AccountNumber",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "accountnumber",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Address1_City",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "address1_city",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Address1_PostCode",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "address1_postalcode",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Address1_State",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "address1_stateorprovince",
-														"type": "String"
+														"name": "createdon",
+														"type": "DateTime"
 													}
 												},
 												{
@@ -457,32 +462,34 @@
 												},
 												{
 													"source": {
-														"name": "Name",
+														"name": "FirstName",
 														"type": "String",
 														"physicalType": "nvarchar"
 													},
 													"sink": {
-														"name": "name",
+														"name": "firstname",
 														"type": "String"
 													}
 												},
 												{
 													"source": {
-														"name": "new_SourceId"
+														"name": "LastName",
+														"type": "String",
+														"physicalType": "nvarchar"
 													},
 													"sink": {
-														"name": "new_sourceid",
+														"name": "lastname",
 														"type": "String"
 													}
 												},
 												{
 													"source": {
-														"name": "CreatedOn",
+														"name": "ModifiedOn",
 														"type": "DateTime",
 														"physicalType": "datetime"
 													},
 													"sink": {
-														"name": "overriddencreatedon",
+														"name": "modifiedon",
 														"type": "DateTime"
 													}
 												},
@@ -493,18 +500,17 @@
 														"physicalType": "uniqueidentifier"
 													},
 													"sink": {
-														"name": "owninguser",
+														"name": "ownerid",
 														"type": "Guid"
 													}
 												},
 												{
 													"source": {
-														"name": "ownerid@EntityReference",
-														"type": "String",
-														"physicalType": "varchar"
+														"name": "parentcustomerid@EntityReference",
+														"type": "String"
 													},
 													"sink": {
-														"name": "owneridtype",
+														"name": "parentcustomeridtype",
 														"type": "String"
 													}
 												},
@@ -517,6 +523,28 @@
 													"sink": {
 														"name": "telephone1",
 														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactId",
+														"type": "Guid",
+														"physicalType": "uniqueidentifier"
+													},
+													"sink": {
+														"name": "new_sourceid",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "ParentCustomerId",
+														"type": "Guid",
+														"physicalType": "uniqueidentifier"
+													},
+													"sink": {
+														"name": "parentcustomerid",
+														"type": "Guid"
 													}
 												}
 											],
@@ -835,144 +863,8 @@
 											"type": "Expression"
 										},
 										"translator": {
-											"type": "TabularTranslator",
-											"mappings": [
-												{
-													"source": {
-														"name": "AccountId",
-														"type": "Guid",
-														"physicalType": "uniqueidentifier"
-													},
-													"sink": {
-														"name": "accountid",
-														"type": "Guid"
-													}
-												},
-												{
-													"source": {
-														"name": "AccountNumber",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "accountnumber",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Address1_City",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "address1_city",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Address1_PostCode",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "address1_postalcode",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Address1_State",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "address1_stateorprovince",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "EmailAddress1",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "emailaddress1",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Name",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "name",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "new_SourceId"
-													},
-													"sink": {
-														"name": "new_sourceid",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "CreatedOn",
-														"type": "DateTime",
-														"physicalType": "datetime"
-													},
-													"sink": {
-														"name": "overriddencreatedon",
-														"type": "DateTime"
-													}
-												},
-												{
-													"source": {
-														"name": "OwnerId",
-														"type": "Guid",
-														"physicalType": "uniqueidentifier"
-													},
-													"sink": {
-														"name": "owninguser",
-														"type": "Guid"
-													}
-												},
-												{
-													"source": {
-														"name": "ownerid@EntityReference",
-														"type": "String",
-														"physicalType": "varchar"
-													},
-													"sink": {
-														"name": "owneridtype",
-														"type": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "Telephone1",
-														"type": "String",
-														"physicalType": "nvarchar"
-													},
-													"sink": {
-														"name": "telephone1",
-														"type": "String"
-													}
-												}
-											],
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
+											"value": "@pipeline().parameters.mappings",
+											"type": "Expression"
 										}
 									},
 									"inputs": [
@@ -2010,13 +1902,127 @@
 						"type": "int",
 						"defaultValue": 10000
 					},
-					"sourcePrimaryKeyColumn": {
-						"type": "string",
-						"defaultValue": "AccountId"
-					},
-					"sourceStagingTableName": {
-						"type": "string",
-						"defaultValue": "AccountStaging"
+					"mappings": {
+						"type": "object",
+						"defaultValue": {
+							"type": "TabularTranslator",
+							"mappings": [
+								{
+									"source": {
+										"name": "CreatedOn",
+										"type": "DateTime",
+										"physicalType": "datetime"
+									},
+									"sink": {
+										"name": "createdon",
+										"type": "DateTime"
+									}
+								},
+								{
+									"source": {
+										"name": "EmailAddress1",
+										"type": "String",
+										"physicalType": "nvarchar"
+									},
+									"sink": {
+										"name": "emailaddress1",
+										"type": "String"
+									}
+								},
+								{
+									"source": {
+										"name": "FirstName",
+										"type": "String",
+										"physicalType": "nvarchar"
+									},
+									"sink": {
+										"name": "firstname",
+										"type": "String"
+									}
+								},
+								{
+									"source": {
+										"name": "LastName",
+										"type": "String",
+										"physicalType": "nvarchar"
+									},
+									"sink": {
+										"name": "lastname",
+										"type": "String"
+									}
+								},
+								{
+									"source": {
+										"name": "ModifiedOn",
+										"type": "DateTime",
+										"physicalType": "datetime"
+									},
+									"sink": {
+										"name": "modifiedon",
+										"type": "DateTime"
+									}
+								},
+								{
+									"source": {
+										"name": "OwnerId",
+										"type": "Guid",
+										"physicalType": "uniqueidentifier"
+									},
+									"sink": {
+										"name": "ownerid",
+										"type": "Guid"
+									}
+								},
+								{
+									"source": {
+										"name": "parentcustomerid@EntityReference",
+										"type": "String"
+									},
+									"sink": {
+										"name": "parentcustomeridtype",
+										"type": "String"
+									}
+								},
+								{
+									"source": {
+										"name": "Telephone1",
+										"type": "String",
+										"physicalType": "nvarchar"
+									},
+									"sink": {
+										"name": "telephone1",
+										"type": "String"
+									}
+								},
+								{
+									"source": {
+										"name": "ContactId",
+										"type": "Guid",
+										"physicalType": "uniqueidentifier"
+									},
+									"sink": {
+										"name": "new_sourceid",
+										"type": "String"
+									}
+								},
+								{
+									"source": {
+										"name": "ParentCustomerId",
+										"type": "Guid",
+										"physicalType": "uniqueidentifier"
+									},
+									"sink": {
+										"name": "parentcustomerid",
+										"type": "Guid"
+									}
+								}
+							],
+							"typeConversion": true,
+							"typeConversionSettings": {
+								"allowDataTruncation": true,
+								"treatBooleanAsNumber": false
+							}
+						}
 					}
 				},
 				"variables": {
