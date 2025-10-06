@@ -242,9 +242,16 @@
 									"type": "AzureSqlSource",
 									"additionalColumns": [
 										{
+											"name": "ownerid@EntityReference",
+											"value": {
+												"value": "'systemuser'",
+												"type": "Expression"
+											}
+										},
+										{
 											"name": "parentcustomerid@EntityReference",
 											"value": {
-												"value": "string('account')",
+												"value": "'account'",
 												"type": "Expression"
 											}
 										}
@@ -308,6 +315,17 @@
 								"translator": {
 									"type": "TabularTranslator",
 									"mappings": [
+										{
+											"source": {
+												"name": "ContactId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "contactid",
+												"type": "Guid"
+											}
+										},
 										{
 											"source": {
 												"name": "CreatedOn",
@@ -376,6 +394,27 @@
 										},
 										{
 											"source": {
+												"name": "ownerid@EntityReference",
+												"type": "String"
+											},
+											"sink": {
+												"name": "owneridtype",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ParentCustomerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "parentcustomerid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
 												"name": "parentcustomerid@EntityReference",
 												"type": "String"
 											},
@@ -393,28 +432,6 @@
 											"sink": {
 												"name": "telephone1",
 												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "ContactId",
-												"type": "Guid",
-												"physicalType": "uniqueidentifier"
-											},
-											"sink": {
-												"name": "new_sourceid",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "ParentCustomerId",
-												"type": "Guid",
-												"physicalType": "uniqueidentifier"
-											},
-											"sink": {
-												"name": "parentcustomerid",
-												"type": "Guid"
 											}
 										}
 									],
@@ -489,6 +506,12 @@
 									"dependencyConditions": [
 										"Failed"
 									]
+								},
+								{
+									"activity": "sp_ClaimStagingBatch_0",
+									"dependencyConditions": [
+										"Failed"
+									]
 								}
 							],
 							"policy": {
@@ -524,6 +547,8 @@
 				"name": "Until_AllClaimedAndProcessed_1",
 				"description": "",
 				"type": "Until",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set_RemainingCount_int",
@@ -843,6 +868,8 @@
 				"name": "Until_AllClaimedAndProcessed_2",
 				"description": "",
 				"type": "Until",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set_RemainingCount_int",
@@ -1288,6 +1315,8 @@
 				"name": "Until_AllClaimedAndProcessed_3",
 				"description": "",
 				"type": "Until",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set_RemainingCount_int",
