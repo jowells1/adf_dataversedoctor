@@ -137,9 +137,49 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
-										"type": "Expression"
+									"sqlReaderStoredProcedureName": "[dbo].[sp_ClaimStagingBatchDynamic]",
+									"storedProcedureParameters": {
+										"BaseTableName": {
+											"type": "String",
+											"value": {
+												"value": "@pipeline().parameters.entitySetName",
+												"type": "Expression"
+											}
+										},
+										"BatchSize": {
+											"type": "Int32",
+											"value": {
+												"value": "@pipeline().parameters.recordsToProcess",
+												"type": "Expression"
+											}
+										},
+										"ClaimRunId": {
+											"type": "Guid",
+											"value": {
+												"value": "@variables('claimRunId_0')",
+												"type": "Expression"
+											}
+										},
+										"OrderBy": {
+											"type": "String",
+											"value": null
+										},
+										"SchemaName": {
+											"type": "String",
+											"value": null
+										},
+										"StagingPKColumn": {
+											"type": "String",
+											"value": null
+										},
+										"StagingSchemaName": {
+											"type": "String",
+											"value": null
+										},
+										"ValidateAgainstBase": {
+											"type": "Boolean",
+											"value": null
+										}
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
