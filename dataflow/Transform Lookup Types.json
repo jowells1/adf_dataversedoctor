@@ -1,0 +1,40 @@
+{
+	"name": "Transform Lookup Types",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_LegacyContact_SQL",
+						"type": "DatasetReference"
+					},
+					"name": "SQLLegacyContact"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "LookupTypes"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     claimRunId as string,",
+				"     recordsToProcess as integer,",
+				"     tablename as string",
+				"}",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     inputs:['@BaseTableName' -> ($tablename),'@ClaimRunId' -> ($claimRunId),'@TopRows' -> ($recordsToProcess),'@SchemaName' -> ''],",
+				"     procedureName: 'usp_GetTargetsForClaim_Dynamic',",
+				"     schemaName: 'dbo',",
+				"     resultSet: true,",
+				"     format: 'procedure') ~> SQLLegacyContact",
+				"SQLLegacyContact derive({ownerid@EntityReference} = 'systemuser',",
+				"          {parentcustomerid@EntityReference} = 'account') ~> LookupTypes"
+			]
+		}
+	}
+}
