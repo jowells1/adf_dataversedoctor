@@ -172,49 +172,9 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderStoredProcedureName": "[[dbo].[sp_ClaimStagingBatchDynamic]",
-											"storedProcedureParameters": {
-												"BaseTableName": {
-													"type": "String",
-													"value": {
-														"value": "@pipeline().parameters.entitySetName",
-														"type": "Expression"
-													}
-												},
-												"BatchSize": {
-													"type": "Int32",
-													"value": {
-														"value": "@pipeline().parameters.recordsToProcess",
-														"type": "Expression"
-													}
-												},
-												"ClaimRunId": {
-													"type": "Guid",
-													"value": {
-														"value": "@variables('claimRunId_0')",
-														"type": "Expression"
-													}
-												},
-												"OrderBy": {
-													"type": "String",
-													"value": null
-												},
-												"SchemaName": {
-													"type": "String",
-													"value": null
-												},
-												"StagingPKColumn": {
-													"type": "String",
-													"value": null
-												},
-												"StagingSchemaName": {
-													"type": "String",
-													"value": null
-												},
-												"ValidateAgainstBase": {
-													"type": "Boolean",
-													"value": null
-												}
+											"sqlReaderQuery": {
+												"value": "@concat('EXEC dbo.sp_ClaimStagingBatchDynamic @BaseTableName = ' ,string(pipeline().parameters.entitySetName), ',  @BatchSize = ', string(pipeline().parameters.recordsToProcess), ', @ClaimRunId = ''', variables('claimRunId_0'), ''';')",
+												"type": "Expression"
 											},
 											"queryTimeout": "02:00:00",
 											"isolationLevel": "ReadCommitted",
@@ -235,15 +195,13 @@
 										{
 											"activity": "Success_FinalizeAccountStagingForClaim_0",
 											"dependencyConditions": [
-												"Succeeded",
 												"Skipped"
 											]
 										},
 										{
 											"activity": "Fail_FinalizeAccountStagingForClaim_0",
 											"dependencyConditions": [
-												"Skipped",
-												"Succeeded"
+												"Skipped"
 											]
 										}
 									],
@@ -258,7 +216,10 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+												"type": "Expression"
+											},
 											"queryTimeout": "02:00:00",
 											"partitionOption": "None"
 										},
@@ -316,17 +277,8 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"additionalColumns": [
-												{
-													"name": "parentcustomerid@EntityReference",
-													"value": {
-														"value": "string('account')",
-														"type": "Expression"
-													}
-												}
-											],
 											"sqlReaderQuery": {
-												"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic @BaseTableName = ''', pipeline().parameters.entitySetName, ''', @ClaimRunId = ''',\n    variables('claimRunId_0'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
+												"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_DynamicWithLookup @BaseTableName = ''', \n\tpipeline().parameters.entitySetName, \n\t''', @ClaimRunId = ''',\n\tvariables('claimRunId_0'),\n\t''', @ExtraColumns= ',\n\tpipeline().parameters.lookupColumns,\n\t', @TopRows = ',\n\tstring(pipeline().parameters.recordsToProcess),\n\t';'\n)",
 												"type": "Expression"
 											},
 											"queryTimeout": "02:00:00",
@@ -446,17 +398,17 @@
 														"physicalType": "uniqueidentifier"
 													},
 													"sink": {
-														"name": "ownerid",
+														"name": "owninguser",
 														"type": "Guid"
 													}
 												},
 												{
 													"source": {
-														"name": "parentcustomerid@EntityReference",
+														"name": "ownerid@EntityReference",
 														"type": "String"
 													},
 													"sink": {
-														"name": "parentcustomeridtype",
+														"name": "owneridtype",
 														"type": "String"
 													}
 												},
@@ -478,7 +430,17 @@
 														"physicalType": "uniqueidentifier"
 													},
 													"sink": {
-														"name": "new_sourceid",
+														"name": "contactid",
+														"type": "Guid"
+													}
+												},
+												{
+													"source": {
+														"name": "parentcustomerid@EntityReference",
+														"type": "String"
+													},
+													"sink": {
+														"name": "parentcustomeridtype",
 														"type": "String"
 													}
 												},
@@ -513,10 +475,7 @@
 											"referenceName": "DS_DV_Account_App1",
 											"type": "DatasetReference",
 											"parameters": {
-												"EntityLogicalName": {
-													"value": "@pipeline().parameters.entitySetName",
-													"type": "Expression"
-												}
+												"EntityLogicalName": "contact"
 											}
 										}
 									]
@@ -567,6 +526,12 @@
 											"dependencyConditions": [
 												"Failed"
 											]
+										},
+										{
+											"activity": "sp_ClaimStagingBatch_0",
+											"dependencyConditions": [
+												"Failed"
+											]
 										}
 									],
 									"policy": {
@@ -603,6 +568,8 @@
 						"name": "Until_AllClaimedAndProcessed_1",
 						"description": "",
 						"type": "Until",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Set_RemainingCount_int",
@@ -703,7 +670,10 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+												"type": "Expression"
+											},
 											"queryTimeout": "02:00:00",
 											"isolationLevel": "ReadCommitted",
 											"partitionOption": "None"
@@ -762,6 +732,15 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
+											"additionalColumns": [
+												{
+													"name": "parentcustomerid@EntityReference",
+													"value": {
+														"value": "string('account')",
+														"type": "Expression"
+													}
+												}
+											],
 											"sqlReaderQuery": {
 												"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_Dynamic @BaseTableName = ''', pipeline().parameters.entitySetName, ''', @ClaimRunId = ''',\n    variables('claimRunId_1'),\n    ''', @TopRows = ',\n    string(pipeline().parameters.recordsToProcess),\n    ';'\n)",
 												"type": "Expression"
@@ -915,6 +894,8 @@
 						"name": "Until_AllClaimedAndProcessed_2",
 						"description": "",
 						"type": "Until",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Set_RemainingCount_int",
@@ -1015,7 +996,10 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+												"type": "Expression"
+											},
 											"queryTimeout": "02:00:00",
 											"partitionOption": "None"
 										},
@@ -1362,6 +1346,8 @@
 						"name": "Until_AllClaimedAndProcessed_3",
 						"description": "",
 						"type": "Until",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "Set_RemainingCount_int",
@@ -1462,7 +1448,10 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderQuery": "SELECT COUNT(*) AS remainingCount FROM dbo.AccountStaging WHERE Status = 'Pending';",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT COUNT(*) AS remainingCount FROM dbo.', string(pipeline().parameters.entitySetName),'Staging WHERE Status = ''Pending'';')",
+												"type": "Expression"
+											},
 											"queryTimeout": "02:00:00",
 											"partitionOption": "None"
 										},
@@ -1818,7 +1807,7 @@
 					},
 					"recordsToProcess": {
 						"type": "Int",
-						"defaultValue": 100000
+						"defaultValue": 10000
 					},
 					"batchSize": {
 						"type": "Int",
@@ -1969,6 +1958,10 @@
 								"treatBooleanAsNumber": false
 							}
 						}
+					},
+					"lookupColumns": {
+						"type": "string",
+						"defaultValue": "'[{\"Name\":\"ownerid@EntityReference\",\"Value\":\"systemuser\"},{\"Name\":\"parentcustomerid@EntityReference\",\"Value\":\"account\"}]'"
 					}
 				},
 				"variables": {
