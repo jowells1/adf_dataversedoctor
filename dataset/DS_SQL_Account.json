@@ -1,0 +1,70 @@
+{
+	"name": "DS_SQL_Account",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LegacyContactCenterSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "AccountId",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AccountNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PrimaryContactId",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Telephone1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmailAddress1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Address1_City",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Address1_State",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Address1_PostCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CreatedOn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ModifiedOn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "OwnerId",
+				"type": "uniqueidentifier"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Account"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
