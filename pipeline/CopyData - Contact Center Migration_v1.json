@@ -244,7 +244,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_DynamicWithLookup @BaseTableName = ''', \n\tpipeline().parameters.entitySetName, \n\t''', @ClaimRunId = ''',\n\tvariables('claimRunId_0'),\n\t''', @ExtraColumns= ',\n\tpipeline().parameters.lookupColumns,\n  ', @OffsetRows = ', string(mul(variables('partitionIndex'), pipeline().parameters.recordsToProcess)),\n  ', @FetchRows = ', string(pipeline().parameters.recordsToProcess),\n\t';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_DynamicWithLookup @BaseTableName = ''', \n\tpipeline().parameters.entitySetName, \n\t''', @ClaimRunId = ''',\n\tvariables('claimRunId_0'),\n\t''', @ExtraColumns= ',\n\tpipeline().parameters.lookupColumns,\n  ', @OffsetRows = ', string(mul(variables('partitionIndex_0'), pipeline().parameters.recordsToProcess)),\n  ', @FetchRows = ', string(pipeline().parameters.recordsToProcess),\n\t';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -437,7 +437,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App1",
+									"referenceName": "DS_DV_Identity1",
 									"type": "DatasetReference",
 									"parameters": {
 										"EntityLogicalName": "contact"
@@ -815,7 +815,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App2",
+									"referenceName": "DS_DV_Identity2",
 									"type": "DatasetReference",
 									"parameters": {
 										"EntityLogicalName": {
@@ -1262,7 +1262,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "DS_DV_Account_App3",
+									"referenceName": "DS_DV_Identity3",
 									"type": "DatasetReference",
 									"parameters": {
 										"EntityLogicalName": {

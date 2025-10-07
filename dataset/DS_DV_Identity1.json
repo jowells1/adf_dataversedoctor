@@ -1,8 +1,8 @@
 {
-	"name": "DS_DV_Account_App1",
+	"name": "DS_DV_Identity1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "CommunitySummit_jowells_AppUser_1",
+			"referenceName": "DataverseDoctor_Managed_Identity1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
