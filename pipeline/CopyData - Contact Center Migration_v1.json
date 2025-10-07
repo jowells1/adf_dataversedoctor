@@ -91,7 +91,12 @@
 						]
 					}
 				],
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "uPartitionIndex",
+						"value": "0"
+					}
+				],
 				"typeProperties": {
 					"expression": {
 						"value": "@lessOrEquals(variables('remainingCount'), 0)",
@@ -143,7 +148,11 @@
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
-									"partitionOption": "None"
+									"partitionOption": "DynamicRange",
+									"partitionSettings": {
+										"partitionUpperBound": "",
+										"partitionLowerBound": ""
+									}
 								},
 								"dataset": {
 									"referenceName": "DS_LegacyContact_SQL",
@@ -157,15 +166,9 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Success_FinalizeAccountStagingForClaim_0",
+									"activity": "Increment tempIndex_0",
 									"dependencyConditions": [
-										"Skipped"
-									]
-								},
-								{
-									"activity": "Fail_FinalizeAccountStagingForClaim_0",
-									"dependencyConditions": [
-										"Skipped"
+										"Succeeded"
 									]
 								}
 							],
@@ -241,7 +244,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_DynamicWithLookup @BaseTableName = ''', \n\tpipeline().parameters.entitySetName, \n\t''', @ClaimRunId = ''',\n\tvariables('claimRunId_0'),\n\t''', @ExtraColumns= ',\n\tpipeline().parameters.lookupColumns,\n\t', @TopRows = ',\n\tstring(pipeline().parameters.recordsToProcess),\n\t';'\n)",
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_DynamicWithLookup @BaseTableName = ''', \n\tpipeline().parameters.entitySetName, \n\t''', @ClaimRunId = ''',\n\tvariables('claimRunId_0'),\n\t''', @ExtraColumns= ',\n\tpipeline().parameters.lookupColumns,\n  ', @OffsetRows = ', string(mul(variables('partitionIndex'), pipeline().parameters.recordsToProcess)),\n  ', @FetchRows = ', string(pipeline().parameters.recordsToProcess),\n\t';'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -517,6 +520,60 @@
 								"dataset": {
 									"referenceName": "DS_LegacyContact_SQL",
 									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Increment tempIndex_0",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Fail_FinalizeAccountStagingForClaim_0",
+									"dependencyConditions": [
+										"Skipped"
+									]
+								},
+								{
+									"activity": "Success_FinalizeAccountStagingForClaim_0",
+									"dependencyConditions": [
+										"Skipped"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "tempIndex",
+								"value": {
+									"value": "@add(variables('partitionIndex_0'), 1)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set partitionIndex_0",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Increment tempIndex_0",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "partitionIndex_0",
+								"value": {
+									"value": "@variables('tempIndex')",
+									"type": "Expression"
 								}
 							}
 						}
@@ -1910,9 +1967,6 @@
 			"claimRunId_0": {
 				"type": "String"
 			},
-			"targets": {
-				"type": "Array"
-			},
 			"totalCount": {
 				"type": "Integer"
 			},
@@ -1925,9 +1979,6 @@
 			"MSCRM_SuppressCallbackRegistrationExpanderJob": {
 				"type": "String"
 			},
-			"lastClaimedCount": {
-				"type": "Integer"
-			},
 			"claimRunId_1": {
 				"type": "String"
 			},
@@ -1936,6 +1987,25 @@
 			},
 			"claimRunId_3": {
 				"type": "String"
+			},
+			"partitionIndex_0": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"partitionIndex_1": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"partitionIndex_2": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"partitionIndex_3": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"tempIndex": {
+				"type": "Integer"
 			}
 		},
 		"annotations": [
