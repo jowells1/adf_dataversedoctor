@@ -1,0 +1,42 @@
+{
+	"name": "DS_SQL_AccountStaging",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LegacyContactCenterSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "AccountId",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "PartitionId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SequenceNumber",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LastProcessedOn",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "AccountStaging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
