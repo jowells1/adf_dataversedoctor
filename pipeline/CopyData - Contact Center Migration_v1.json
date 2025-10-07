@@ -240,40 +240,9 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderStoredProcedureName": "[dbo].[usp_GetTargetsForClaim_DynamicWithLookup]",
-									"storedProcedureParameters": {
-										"BaseTableName": {
-											"type": "String",
-											"value": {
-												"value": "@pipeline().parameters.entitySetName",
-												"type": "Expression"
-											}
-										},
-										"ClaimRunId": {
-											"type": "String",
-											"value": {
-												"value": "@variables('claimRunId_0')",
-												"type": "Expression"
-											}
-										},
-										"ExtraColumns": {
-											"type": "String",
-											"value": {
-												"value": "@pipeline().parameters.lookupColumns",
-												"type": "Expression"
-											}
-										},
-										"SchemaName": {
-											"type": "String",
-											"value": "dbo"
-										},
-										"TopRows": {
-											"type": "Int32",
-											"value": {
-												"value": "@pipeline().parameters.recordsToProcess",
-												"type": "Expression"
-											}
-										}
+									"sqlReaderQuery": {
+										"value": "@concat(\n    'EXEC dbo.usp_GetTargetsForClaim_DynamicWithLookup @BaseTableName = ''', \n\tpipeline().parameters.entitySetName, \n\t''', @ClaimRunId = ''',\n\tvariables('claimRunId_0'),\n\t''', @ExtraColumns= ',\n\tpipeline().parameters.lookupColumns,\n\t', @TopRows = ',\n\tstring(pipeline().parameters.recordsToProcess),\n\t';'\n)",
+										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
 									"isolationLevel": "ReadCommitted",
@@ -332,70 +301,9 @@
 									"mappings": [
 										{
 											"source": {
-												"name": "contactid"
-											},
-											"sink": {
-												"name": "contactid",
-												"type": "Guid"
-											}
-										},
-										{
-											"source": {
-												"name": "firstname"
-											},
-											"sink": {
-												"name": "firstname",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "lastname"
-											},
-											"sink": {
-												"name": "lastname",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "emailaddress1"
-											},
-											"sink": {
-												"name": "emailaddress1",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "telephone1"
-											},
-											"sink": {
-												"name": "telephone1",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "parentcustomerid"
-											},
-											"sink": {
-												"name": "parentcustomerid",
-												"type": "Guid"
-											}
-										},
-										{
-											"source": {
-												"name": "parentcustomerid@EntityReference"
-											},
-											"sink": {
-												"name": "parentcustomeridtype",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "createdon"
+												"name": "CreatedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
 											},
 											"sink": {
 												"name": "createdon",
@@ -404,7 +312,42 @@
 										},
 										{
 											"source": {
-												"name": "modifiedon"
+												"name": "EmailAddress1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "emailaddress1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "FirstName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "firstname",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "LastName",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "lastname",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ModifiedOn",
+												"type": "DateTime",
+												"physicalType": "datetime"
 											},
 											"sink": {
 												"name": "modifiedon",
@@ -413,7 +356,9 @@
 										},
 										{
 											"source": {
-												"name": "ownerid"
+												"name": "OwnerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
 											},
 											"sink": {
 												"name": "owninguser",
@@ -422,11 +367,55 @@
 										},
 										{
 											"source": {
-												"name": "ownerid@EntityReference"
+												"name": "ownerid@EntityReference",
+												"type": "String"
 											},
 											"sink": {
 												"name": "owneridtype",
 												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Telephone1",
+												"type": "String",
+												"physicalType": "nvarchar"
+											},
+											"sink": {
+												"name": "telephone1",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ContactId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "contactid",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "parentcustomerid@EntityReference",
+												"type": "String"
+											},
+											"sink": {
+												"name": "parentcustomeridtype",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ParentCustomerId",
+												"type": "Guid",
+												"physicalType": "uniqueidentifier"
+											},
+											"sink": {
+												"name": "parentcustomerid",
+												"type": "Guid"
 											}
 										}
 									],
@@ -1913,8 +1902,8 @@
 				}
 			},
 			"lookupColumns": {
-				"type": "object",
-				"defaultValue": "{\"Name\":\"ownerid@EntityReference\",\"Value\":\"systemuser\"}, {\"Name\":\"parentcustomerid@EntityReference\",\"Value\":\"account\"}"
+				"type": "string",
+				"defaultValue": "'[{\"Name\":\"ownerid@EntityReference\",\"Value\":\"systemuser\"},{\"Name\":\"parentcustomerid@EntityReference\",\"Value\":\"account\"}]'"
 			}
 		},
 		"variables": {
