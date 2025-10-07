@@ -1,0 +1,16 @@
+{
+	"name": "DataverseDoctor_Managed_AppUser1",
+	"properties": {
+		"annotations": [],
+		"type": "CommonDataServiceForApps",
+		"typeProperties": {
+			"deploymentType": "Online",
+			"serviceUri": "https://dataversedoctor.crm.dynamics.com",
+			"authenticationType": "ManagedIdentity",
+			"credential": {
+				"referenceName": "DataverseDoctor_jowells_Identity1",
+				"type": "CredentialReference"
+			}
+		}
+	}
+}
